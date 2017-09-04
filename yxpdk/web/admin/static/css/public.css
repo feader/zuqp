@@ -1,0 +1,72 @@
+@media (min-width:100px) {
+    /*.Wdate{margin: 3px 40px 3px 0;}*/
+    #sub_btn{float: left;margin: 0px 0px 0px 50px;}
+    /*input[name="uid"] {margin: 3px 0px 3px 0;width: 118px;}
+	input[name="handler"] {margin: 3px 0px 3px 0;}
+	input[name="content"] {margin: 3px 10px 3px 0;}
+	input[name="order_id"] {margin: 3px 10px 3px 0;width:120px;}
+	input[name="alipay_order_id"] {margin: 3px 10px 3px 0;width:120px;}
+	input[name="sell_agency_uid"] {margin: 3px 10px 3px 0;width:100px;}
+	input[name="buy_agency_uid"] {margin: 3px 10px 3px 0;width:100px;}
+	input[name="seller_uid"] {margin: 3px 10px 3px 0;width:100px;}
+	input[name="buyer_uid"] {margin: 3px 10px 3px 0;width:100px;}
+	input[name="uber_agency"] {margin: 3px 10px 3px 0;width:112px;}
+	input[name="join_point"] {margin: 3px 10px 3px 0;width:112px;}*/
+	
+}
+
+@media (min-width:200px) {
+    /*.Wdate{margin: 3px 90px 3px 0;}*/
+    #sub_btn{float: left;}
+	/*input[name="uid"] {margin: 3px 60px 3px 0;}
+	input[name="handler"] {margin: 3px 50px 3px 0;}
+	input[name="content"] {margin: 3px 60px 3px 0;}
+	input[name="username"] {margin: 3px 60px 3px 0;}
+	input[name="total_pay_times"] {margin: 3px 60px 3px 0;}
+	input[name="order_id"] {margin: 3px 60px 3px 0;}
+	input[name="alipay_order_id"] {margin: 3px 60px 3px 0;}
+	input[name="sell_agency_uid"] {margin: 3px 60px 3px 0;}
+	input[name="buy_agency_uid"] {margin: 3px 60px 3px 0;}
+	input[name="seller_uid"] {margin: 3px 60px 3px 0;}
+	input[name="buyer_uid"] {margin: 3px 60px 3px 0;}
+	input[name="uber_agency"] {margin: 3px 60px 3px 0;}
+	input[name="join_point"] {margin: 3px 60px 3px 0;}*/
+}
+
+@media (min-width:280px) {
+    /*.Wdate{margin: 3px 145px 3px 0;}*/
+    #sub_btn{float: left;}
+	/*input[name="uid"] {margin: 3px 110px 3px 0;}
+	input[name="handler"] {margin: 3px 100px 3px 0;}
+	input[name="content"] {margin: 3px 110px 3px 0;}
+	input[name="username"] {margin: 3px 110px 3px 0;}
+	input[name="total_pay_times"] {margin: 3px 110px 3px 0;}
+	input[name="order_id"] {margin: 3px 110px 3px 0;}
+	input[name="alipay_order_id"] {margin: 3px 110px 3px 0;}
+	input[name="sell_agency_uid"] {margin: 3px 110px 3px 0;}
+	input[name="buy_agency_uid"] {margin: 3px 110px 3px 0;}
+	input[name="seller_uid"] {margin: 3px 110px 3px 0;}
+	input[name="buyer_uid"] {margin: 3px 110px 3px 0;}
+	input[name="uber_agency"] {margin: 3px 110px 3px 0;}
+	input[name="join_point"] {margin: 3px 110px 3px 0;}*/
+}
+
+@media (min-width:1200px) {
+    /*.Wdate{margin: 0 0px 0px 0;}*/
+    .total_data{width:10%;float:left;margin:0 0 10px 0;}
+    #sub_btn{float: none;margin: 0px 0px 0px 0px;}
+    /*input[name="uid"] {margin: 0px 0px 0px 0;}
+	input[name="handler"] {margin: 0px 0px 0px 0;}
+	input[name="content"] {margin: 0px 0px 0px 0;}
+	input[name="username"] {margin: 0px 0px 0px 0;}
+	input[name="order_id"] {margin: 0px 0px 0px 0;}
+	input[name="alipay_order_id"] {margin: 0px 0px 0px 0;}
+	input[name="sell_agency_uid"] {margin: 0px 0px 0px 0;}
+	input[name="buy_agency_uid"] {margin: 0px 0px 0px 0;}
+	input[name="seller_uid"] {margin: 0px 0px 0px 0;}
+	input[name="buyer_uid"] {margin: 0px 0px 0px 0;}
+	input[name="uber_agency"] {margin: 0px 0px 0px 0;}
+	input[name="join_point"] {margin: 0px 0px 0px 0;}*/
+}
+
+.show_br{height:1px;}

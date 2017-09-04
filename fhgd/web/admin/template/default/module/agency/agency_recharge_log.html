@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/My97DatePicker/WdatePicker.js"></script>
+
+<title><{$_lang.left.recharge_record}></title>
+</head>
+
+<body>
+
+<div id="position">您当前位置：充值系统 > 充值管理</div>
+<div>
+<table cellspacing="1" cellpadding="3" border="0" class='table_list' >
+    <tr class='table_list_head'>
+        <td>订单号</td>
+        <td>金额</td>
+        <td>钻石</td>
+        <!-- <td>用户ID</td> -->
+        <td>下单时间</td>
+        <td>支付方式</td>
+        <td>状态</td>
+    </tr>
+
+    <{foreach item=order from=$agency_charge_list key=key}>
+        <tr class="<{cycle values='trOdd, trEven'}>">
+            <td><{$order.order_id}></td>
+            <td><{$order.money_number/100}></td>
+            <td><{$order.dimond_number}></td>
+            <!-- <td><{$order.uid}></td> -->
+            <td><{$order.create_time|date_format:"%Y/%m/%d %H:%M:%S"}></td>
+            <td>
+                <{if $order.pay_way=='alipay'}>
+                    支付宝
+                <{else}>
+                    微信
+                <{/if}>
+            </td>
+            <td>
+                <{if $order.order_status==1}>
+                    已支付
+                <{else}>
+                    未支付
+                <{/if}>
+            </td>
+        </tr>
+    <{/foreach}>
+</table>
+<{foreach from=$pageHTML key=page_name item=page_id}>
+    <a href="?pid=<{$page_id}>"><{$page_name}></a>
+<{/foreach}>
+</div>
+
+<!-- <div>
+    <form name=search_condition method="post" action="recharge_order_list.php?action=set_condition">
+        <input type="submit" name="submit" value="搜索" />
+        <input type="hidden" name="uid" value="<{$uid}>">
+    </form>
+</div> -->
+</body>
+</html>

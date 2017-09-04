@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+
+<title>设置参数</title>
+</head>
+
+<body>
+
+<div id="position">您当前位置：设置参数</div>
+
+<div>
+    <table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
+        <thead>
+            <tr class='table_list_head'>
+                <td>参数名</td>                        
+                <td>参数说明</td>    
+                <td>参数值</td>               
+                <td>操作</td>
+            </tr>
+        </thead>
+
+        <tbody>
+        <{foreach item=setting_info from=$setting_info key=key}>
+            <tr class="<{cycle values='trOdd, trEven'}>">
+                <td><{$setting_info.setting_name}></td>     
+                <td><{$setting_info.value_introduce}></td>  
+                <td><input type="text" value="<{$setting_info.setting_value}>" /></td>                            
+                <td> 
+                <{if $gid==1}>
+                    <input type="button" class="edit_save" value="修改" />
+                    <input type="hidden" value="<{$setting_info.id}>" />                          
+                <{/if}>     
+                </td>          
+            </tr>
+        <{/foreach}>
+        </tbody>
+    </table>
+</div>
+<script>
+    $('.edit_save').click(function(){
+        var id = $(this).next().val();
+        var setting_value = $(this).parent().prev().children().val();
+        $.ajax({
+            type:'post',
+            url:'setting_save.php?action=save_info',
+            data:{id:id,setting_value:setting_value},
+            dataType:'json',
+            success:function(res){
+                if(res.rcode){
+                    alert('修改成功！');
+                    window.location.reload();
+                }else{
+                    alert(res.msg);
+                    window.location.reload();
+                }           
+            } 
+        })
+    })
+    
+</script>
+</body>
+</html>

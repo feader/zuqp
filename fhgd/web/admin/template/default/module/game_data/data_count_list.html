@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/My97DatePicker/WdatePicker.js"></script>
+<title>数据统计</title>
+</head>
+<body>
+<div id="position">数据统计</div>
+
+<div class='divOperation'>
+<form name="myform" method="get" action="data_count.php">
+&nbsp;<{$_lang.conmon.start_time}>：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" id='dateStart' name='dateStart' size='12' value='<{$time_start}>'/>
+&nbsp;<{$_lang.conmon.end_time}>：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" id='dateEnd' name='dateEnd' size='12' value='<{$time_end}>'/>
+
+&nbsp;<input type="submit" name='search' class="input2"  />
+
+</form>
+</div>
+
+<table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
+    <thead>
+    <tr class='table_list_head'>
+    	<td>时间</td>
+        <td>新增注册</td>       
+        <td>当天充值数</td>       
+        <td>当天消耗房卡数</td>                       
+        <td>日平均在线人数</td>                       
+        <td>实时平均在线人数</td>                       
+        <td>当日登录帐号数</td>                       
+        <td>总充值付费用户</td>                       
+        <td>历史注册总数</td>                       
+        <td>日活跃账号数</td>                       
+        <td>日活跃付费账号数</td>                       
+        <td>月活跃账号数</td>                       
+        <td>月活跃账付费号数</td>                       
+        <td>用户日平均在线时长（分）</td>                       
+        <td>用户流失率（日）</td>                       
+        <td>用户流失率（月）</td>                       
+        <td>活跃率</td>                       
+        <td>月付费用户</td>                       
+        <td>日付费用户</td>                       
+        <td>注册用户付费率（日）</td>                       
+        <td>平均在线付费率（日）</td>                       
+        <td>活跃用户付费率（日）</td>                      
+        <td>平均在线付费率（月）</td>                       
+        <td>活跃用户付费率（月）</td>                        
+        <td>活跃用户付费率（月）</td>                        
+        <td>当日登陆账号数</td>                        
+        <td>次留</td>             
+        <td>三留</td>             
+        <td>四留</td>             
+        <td>五留</td>             
+        <td>六留</td>             
+        <td>七留</td>             
+        <td>14留</td>             
+        <td>30留</td>             
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <{foreach item=data_gather_list from=$data_count key=key}>
+        <tr class="<{cycle values='trOdd, trEven'}>">         
+            <td><{$data_gather_list.data_time}></td> 
+            <td><{$data_gather_list.register}></td>
+            <td><{$data_gather_list.total_charge_money}></td>                     
+            <td><{$data_gather_list.total_cost_dimond}></td>                     
+            <td><{$data_gather_list.acu}></td>                                          
+            <td><{$data_gather_list.aacu}></td>                                          
+            <td><{$data_gather_list.uv}></td>                                          
+            <td><{$data_gather_list.pu}></td>                                          
+            <td><{$data_gather_list.all_reg}></td>                                          
+            <td><{$data_gather_list.dau}></td>                                          
+            <td><{$data_gather_list.dau_apa}></td>                                          
+            <td><{$data_gather_list.mau}></td>                                          
+            <td><{$data_gather_list.mau_apa}></td>                                          
+            <td><{$data_gather_list.dts/60|string_format:"%.2f"}></td>                                          
+            <td><{$data_gather_list.dul}></td>                                          
+            <td><{$data_gather_list.mul}></td>                                          
+            <td><{$data_gather_list.rhyl}></td>                                          
+            <td><{$data_gather_list.marpu}></td>                                          
+            <td><{$data_gather_list.darpu}></td>                                          
+            <td><{$data_gather_list.dau_reg_ffl}></td>                                          
+            <td><{$data_gather_list.dau_avg_online_ffl}></td>                                          
+            <td><{$data_gather_list.dau_nv_ffl}></td>                                          
+            <td><{$data_gather_list.mau_reg_ffl}></td>                                          
+            <td><{$data_gather_list.mau_avg_online_ffl}></td>                                          
+            <td><{$data_gather_list.mau_nv_ffl}></td>                                          
+            <td><{$data_gather_list.au}></td>                                                                                   
+            <td><{$data_gather_list.second_retention}>%</td>                     
+            <td><{$data_gather_list.third_retention}>%</td>                     
+            <td><{$data_gather_list.fourth_retention}>%</td>                     
+            <td><{$data_gather_list.fifth_retention}>%</td>                     
+            <td><{$data_gather_list.sixth_retention}>%</td>                     
+            <td><{$data_gather_list.seventh_retention}>%</td>                     
+            <td><{$data_gather_list.fourteenth_retention}>%</td>                     
+            <td><{$data_gather_list.thirty_retention}>%</td>                                    
+        </tr>
+    <{/foreach}>
+	    
+    </tbody>
+</table>
+
+
+
+<{foreach from=$pageHTML key=page_name item=page_id}>
+    <a href="?pid=<{$page_id}>&dateStart=<{$time_start}>&dateEnd=<{$time_end}>"><{$page_name}></a>
+<{/foreach}>
+
+</body>
+</html>

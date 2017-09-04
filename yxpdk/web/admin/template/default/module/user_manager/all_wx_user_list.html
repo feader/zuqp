@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<style type="text/css">
+tr.focus {
+    background-color:#B0E2FF;
+}
+</style>
+
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tAgency tbody tr").click(function () {
+            $(this).parent().find("tr.focus").toggleClass("focus"); //取消原先选中行
+            $(this).toggleClass("focus"); //设定当前行为选中行
+        });
+    });
+</script>
+
+<title>微信推广用户</title>
+</head>
+
+<body>
+
+<div id="position">当前位置：微信推广用户</div>
+<div>
+
+<div class="divOperation">
+    <form name="myform" method="get" action="" id="user_info">
+    代理ID：<input type="text" name="agency_id" value="<{$search.agency_id}>"/>
+    <!-- &nbsp;注册起始：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateStart" size="12" value="<{$date_time.datestart}>">
+    &nbsp;注册结束：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateEnd" size="12" value="<{$date_time.dateend}>"> -->
+   
+   
+    <input type="submit" value="查询" id='sub_btn'>
+<!--     <input type="hidden" value="" name="action" id='action'/> -->
+    </form>
+    <!-- <input type="button" value="导出" id='do_execel'/> -->
+</div>
+
+<table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
+    <thead>
+    <tr class='table_list_head'>
+        <td>编号</td>
+        <td>推广者</td>
+        <td>会员ID</td>
+        <td>微信unionid</td>
+        <td>下载IP</td>
+        <td>昵称</td>      
+        <td>钻石余额</td>
+        <td>累计充值钻石</td>
+        <td>推广绑定时间</td>       
+        <td>注册时间</td>       
+    </tr>
+    </thead>
+
+    <tbody>
+    <{foreach item=leaguer from=$leaguer_list key=key}>
+        <tr class="<{cycle values='trOdd, trEven'}>">
+            <td><{$leaguer.id}></td>
+            <td><{$leaguer.agency_id}></td>
+            <td><{$leaguer.uid}></td>
+            <td><{$leaguer.unionid}></td>
+            <td><{$leaguer.agent_ip}></td>
+            <td><{$leaguer.username}></td>
+            <td><{$leaguer.dimond}></td>           
+            <td><{$leaguer.sum_dimond}></td>
+            <td><{$leaguer.action_time|date_format:"%Y/%m/%d %H:%M:%S"}></td>
+            <td><{$leaguer.register_time|date_format:"%Y/%m/%d %H:%M:%S"}></td>
+            
+        </tr>
+    <{/foreach}>
+    </tbody>
+</table>
+
+<{foreach from=$pageHTML key=page_name item=page_id}>
+    <a href="?pid=<{$page_id}>&agency_id=<{$search.agency_id}>"><{$page_name}></a>
+<{/foreach}>
+</div>
+
+</body>
+</html>

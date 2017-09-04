@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/My97DatePicker/WdatePicker.js"></script>
+<link rel="stylesheet" href="../../../admin/static/css/public.css" type="text/css">
+<title>房间统计</title>
+</head>
+<body>
+<div id="position">房间统计</div>
+
+<div class='divOperation'>
+<form name="myform" method="get" action="room_log.php">
+&nbsp;玩家UID：<input type="text" name='uid' value='<{$uid}>'/>
+&nbsp;<{$_lang.conmon.start_time}>：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" id='dateStart' name='dateStart' size='12' value='<{$time_start}>'/>
+&nbsp;<{$_lang.conmon.end_time}>：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" id='dateEnd' name='dateEnd' size='12' value='<{$time_end}>'/>
+
+&nbsp;<input type="submit" name='search' class="input2"  />
+
+</form>
+</div>
+
+<div class="total_data">
+    <table cellspacing="1" cellpadding="3" border="0" class='table_list'>
+        <tr class='table_list_head'>
+            <td>今天开房数</td>
+            <td>昨天开房数</td>
+            <td>本月开房数</td>
+            <td>总开房数</td>
+        </tr>
+        <tr class="trOdd">
+            <td><{$count_data.today}></td>
+            <td><{$count_data.yesterday}></td>
+            <td><{$count_data.month}></td>
+            <td><{$count_data.all}></td>
+        </tr>
+    </table>
+</div>
+
+<table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
+    <thead>
+        <tr class='table_list_head'>
+            <td>序号</td>
+            <td>房间号</td>       
+            <td>参与游戏玩家UID</td>       
+            <td>开房时间</td>                             
+            <td>结束时间</td>                             
+            <td>盘数</td>                             
+        </tr>
+    </thead>
+
+    <tbody>
+
+    <{foreach item=room_log_list from=$room_log key=key}>
+        <tr class="<{cycle values='trOdd, trEven'}>">         
+            <td><{$key+1}></td> 
+            <td><{$room_log_list.room_id}></td>
+            <td>                
+                <{if $room_log_list.uids!=''}>
+                    <{$room_log_list.uids}>
+                <{else}>
+                    无数据
+                <{/if}>    
+            </td>                     
+            <td><{$room_log_list.action_time|date_format:"%Y/%m/%d %H:%M:%S"}></td>                     
+            <td>
+                <{if $room_log_list.finish_time!=0}>
+                    <{$room_log_list.finish_time|date_format:"%Y/%m/%d %H:%M:%S"}>
+                <{else}>
+                    无数据
+                <{/if}>
+            </td>                     
+            <td>
+                <{if $room_log_list.play_times!=0}>
+                    <{$room_log_list.play_times}>
+                <{else}>
+                    无数据
+                <{/if}>          
+            </td>                     
+        </tr>
+    <{/foreach}>
+        
+    </tbody>
+</table>
+
+
+
+<{foreach from=$pageHTML key=page_name item=page_id}>
+    <a href="?pid=<{$page_id}>&dateStart=<{$time_start}>&dateEnd=<{$time_end}>&uid=<{$uid}>"><{$page_name}></a>
+<{/foreach}>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>代理银行资料编辑</title>
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/public.css" type="text/css">
+<style type="text/css">
+
+#all {text-align:left;margin-left:4px; line-height:1;}
+#nodes {width:100%; float:left;border:1px #ccc solid;}
+#result {width: 100%; height:100%; clear:both; border:1px #ccc solid;}
+
+</style>
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/public.js"></script>
+
+</head>
+
+ <body>
+ <div id="position">您当前位置：代理银行资料编辑</div>
+	<form action="agency_bank_info_save.php" method="post">
+		<p>代理：<{$detail.uid}></p>
+		微信：<input type="text" name="weixin" value="<{$detail.weixin}>" >
+		<div class='show_br'></div>
+        支付宝：<input type="text" name="alipay" value="<{$detail.alipay}>" >
+        <div class='show_br'></div>
+        开户行：<input type="text" name="opening_bank" value="<{$detail.opening_bank}>" >
+        <div class='show_br'></div>
+        分行：<input type="text" name="branch" value="<{$detail.branch}>" >
+        <div class='show_br'></div>
+        开户名：<input type="text" name='bank_name' value="<{$detail.bank_name}>" >
+        <div class='show_br'></div>
+        开户账号：<input type="text" name='bank_account' value="<{$detail.bank_account}>" >
+        <div class='show_br'></div>
+		
+		<br>
+		<input type="hidden" value="<{$detail.id}>" name="id" />
+		<input type="hidden" value="<{$detail.uid}>" name="uid" />
+		<input name="submit" value="提交修改"  type="submit">
+		<br><br>
+
+	</form>
+ </body>
+</html>

@@ -1,0 +1,111 @@
+<?php /* Smarty version 2.6.25, created on 2017-09-04 16:10:42
+         compiled from top.html */ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta id="viewport" name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0" />
+<title>公共头</title>
+<script type="text/javascript" src="../../web/admin/static/js/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){ 
+    //getSelectVal(); 
+    $("#agentname").change(function(){ 
+        getSelectVal(); 
+    });	
+}); 
+</script>
+<script type="text/javascript">
+function getSelectVal(){ 
+    $.getJSON("agent_server.php",{agentname:$("#agentname").val()},function(json){ 
+        var servername = $("#servername"); 
+        $("option",servername).remove(); //清空原有的选项 
+        $.each(json,function(index,array){ 
+			if(array['id'] == '<?php echo $this->_tpl_vars['server_id']; ?>
+')
+			{
+            var option = "<option value='"+array['id']+"' selected='selected'>"+array['title']+"</option>"; 
+            }
+			else 
+			{
+				var option = "<option value='"+array['id']+"'>"+array['title']+"</option>";
+			}
+			servername.append(option); 
+        }); 
+    }); 
+}
+
+//语言包  start
+	$(document).ready(function () 
+{
+	$('#switchlang').change(function(){
+		  var txt=$("#switchlang").val();
+		  $.post("top.php",{LANG:txt},function(result){
+			 window.location.reload();
+			 window.parent.frames["main_frame"].location="main.php";
+			 window.parent.frames["left_frame"].location="left.php";
+		  });
+	});
+});
+//语言包  and
+	
+
+</script>
+<style type="text/css">
+body1 { width:100%; height:70px; text-align:center; margin:0 auto; background:#CCC;background:url(../admin/static/images/header.jpg);clear:both;}
+
+#all {width:100%; height:100%;}
+
+@media (min-width:320px) {
+	body {width:100%; height:30px; text-align:center; margin:0 auto;background:#DCE2F1;clear:both;}
+	#title {float:left;width:65%;line-height:50%; text-align:left;}  
+	#select {float:left;width:30%;line-height:50%; text-align:right;left:0px;top:10px;}
+	.welcome{color:#000000;font-size:16px;}
+	.user_name{color:#FF0000;font-size:16px;}
+	#title div{margin:15px 0 0 10px;}
+	.logout{height:20px;width:100px;float:right;text-align:center;background:url(../../web/admin/static/images/button.png);}
+}
+
+@media (min-width:1200px) {
+	body {width:100%; height:50px; text-align:center; margin:0 auto;background:#DCE2F1;clear:both;}
+	#title {float:left; line-height:50%; text-align:left;}  
+	#select {float:right; line-height:50%; text-align:left;left:0px;top:10px;}
+	.logout{height:20px;width:100px;float:right;text-align:center;background:url(../../web/admin/static/images/button.png);}
+	.welcome{color:#000000;font-size:16px;}
+	.user_name{color:#FF0000;font-size:16px;}
+	#title div{margin:15px 0 0 10px;}
+}
+</style>
+</head>
+
+<body>
+    <div id="all">
+    	<div id="title">
+			<div>
+				<span class='welcome'>欢迎您！</span>
+				<span class='user_name'><?php echo $this->_tpl_vars['username']; ?>
+</span>
+			</div>
+		</div>
+        
+		<div id='select'>
+			<form  name=form action="?action=do&type=search" method="post">
+				<table border="0" cellpadding="4" cellspacing="1" >
+					<tr>
+	        			<td>
+					       
+	       				</td>
+					</tr>
+				</table>
+			</form>
+			<div class="logout">
+	       		<a style="color:#FFF; text-decoration:none; font:10px" href="module/system/logoff.php">
+	       			<br><?php echo $this->_tpl_vars['_lang']['left']['logout']; ?>
+<br>
+	       		</a> 
+	       </div>
+		</div>
+    	
+    </div>
+</body>
+</html>

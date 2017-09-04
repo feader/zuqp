@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<style type="text/css">
+tr.focus {
+    background-color:#B0E2FF;
+}
+</style>
+
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tAgency tbody tr").click(function () {
+            $(this).parent().find("tr.focus").toggleClass("focus"); //取消原先选中行
+            $(this).toggleClass("focus"); //设定当前行为选中行
+        });
+    });
+</script>
+
+<title>返卡记录</title>
+</head>
+
+<body>
+
+<div id="position">您当前位置：返卡记录</div>
+
+<div>
+    <form name="query" method="get" action="">
+        开始日期：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" id='dateStart' name='dateStart' size="12" value='<{$dateStart}>'/>
+        <div class='show_br'></div>
+        结束日期：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" id="dateEnd" name="dateEnd" size="12" value="<{$dateEnd}>">
+        <div class='show_br'></div>
+        <input type="submit" name="submit" value="按日期查询" />
+    </form>
+</div>
+
+<table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
+    <tr class='table_list_head'>
+        <td>代理名</td>
+        <td>购买者</td>
+        <td>购买数量</td>
+        <td>返卡数量</td>
+        <td>返卡时间</td>
+    </tr>
+    <{foreach item=log from=$log_list key=key}>
+        <tr class="<{cycle values='trOdd, trEven'}>">
+            <td><{$log.auid}></td>
+            <td><{$log.buyername}></td>
+            <td><{$log.buy_dimond_num}></td>
+            <td><{$log.dimond_back_num}></td>
+            <td><{$log.create_time|date_format:"%Y/%m/%d %H:%M:%S"}></td>
+        </tr>
+    <{/foreach}>
+</table>
+
+<{foreach from=$pageHTML key=page_name item=page_id}>
+    <a href="?pid=<{$page_id}>&dateStart=<{$dateStart}>&dateEnd=<{$dateEnd}>"><{$page_name}></a>
+<{/foreach}>
+
+</body>
+</html>

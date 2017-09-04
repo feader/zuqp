@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<style type="text/css">
+tr.focus {
+    background-color:#B0E2FF;
+}
+</style>
+
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tAgency tbody tr").click(function () {
+            $(this).parent().find("tr.focus").toggleClass("focus"); //取消原先选中行
+            $(this).toggleClass("focus"); //设定当前行为选中行
+        });
+        $("#tAgency1 tbody tr").click(function () {
+            $(this).parent().find("tr.focus").toggleClass("focus"); //取消原先选中行
+            $(this).toggleClass("focus"); //设定当前行为选中行
+        });
+    });
+</script>
+
+<title>返现记录</title>
+</head>
+
+<body>
+
+<div id="position">您当前位置：返现记录</div>
+
+
+<table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
+    <tr class='table_list_head'>
+        <td>月份</td>
+        <td>代理名</td>
+        <td>有消费的玩家数</td>
+        <td>总消耗数</td>
+        <td>奖励房卡</td>
+    </tr>
+    <{foreach item=back_money_log from=$back_money_log_list key=key}>
+        <tr class="<{cycle values='trOdd, trEven'}>">
+            <td><{$back_money_log.get_money_time|date_format:"%Y/%m"}></td>
+            <td><{$back_money_log.auid}></td>
+            <td><{$back_money_log.pay_person_num}></td>
+            <td><{$back_money_log.pay_person_dimond_num}></td>
+            <td><{$back_money_log.get_money}></td>        
+        </tr>
+    <{/foreach}>
+</table>
+
+<div style="width:100%;height:150px;"></div>
+
+<table id="tAgency1" cellspacing="1" cellpadding="3" border="0" class='table_list' >
+    <tr class='table_list_head'>     
+        <td>月份</td>
+        <td>返现金额</td>
+        <td>发放时间</td>
+    </tr>
+    <{foreach item=get_money_log from=$every_month_get_money_log_list key=key}>
+        <tr class="<{cycle values='trOdd, trEven'}>">
+            <td><{$get_money_log.back_date}></td>
+            <td><{$get_money_log.back_money}></td>
+            <td><{$get_money_log.back_time|date_format:"%Y/%m/%d"}></td>
+        </tr>
+    <{/foreach}>
+</table>
+
+<{foreach from=$pageHTML key=page_name item=page_id}>
+    <!-- <a href="?pid=<{$page_id}>&dateStart=<{$dateStart}>"><{$page_name}></a> -->
+<{/foreach}>
+
+</body>
+</html>

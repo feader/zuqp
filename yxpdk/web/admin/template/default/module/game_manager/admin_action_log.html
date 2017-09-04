@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/My97DatePicker/WdatePicker.js"></script>
+<link rel="stylesheet" href="../../../admin/static/css/public.css" type="text/css">
+<script type="text/javascript" src="../../../admin/static/js/public.js"></script>
+<title><{$_lang.left.recharge_record}></title>
+</head>
+
+<body>
+
+<div id="position">您当前位置：日志管理</div>
+<div>
+
+<div>
+    <form method="get" action="admin_action_log.php" id="user_info">
+    玩家ID：<input type="text" name="uid" value="<{$input_data.uid}>" />
+    <div class='show_br'></div>
+    内容：<input type="text" name="content" value="<{$input_data.content}>" />
+    <div class='show_br'></div>
+    操作者：<input type="text" name="handler" value="<{$input_data.handler}>" />
+    <div class='show_br'></div>
+    创建起始：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateStart" size="12" value="<{$data_time.datestart}>">
+    <div class='show_br'></div>
+    创建结束：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateEnd" size="12" value="<{$data_time.dateend}>"> 
+    <div class='show_br'></div>  
+    <input  type="button" value="查询" id='sub_btn' />       
+    <input type="hidden" name="action" value="" id='action'/>       
+    </form>
+    <input type="button" value="导出" id='do_execel'/>
+</div>
+
+<table cellspacing="1" cellpadding="3" border="0" class='table_list' >
+    <tr class='table_list_head'>
+        <td>编号</td>
+        <td>玩家ID</td>
+        <td>内容</td>
+        <td>操作者</td>       
+        <td>类型(0是默认，1是封禁，2是解封)</td>       
+        <td>操作时间</td>
+        
+    </tr>
+
+    <{foreach item=order from=$order_list key=key}>
+        <tr class="<{cycle values='trOdd, trEven'}>">
+            <td><{$order.id}></td>
+            <td><{$order.uid}></td>
+            <td><{$order.content}></td>
+            <td><{$order.handler}></td>          
+            <td><{$order.action_type}></td>          
+            <td><{$order.action_time|date_format:"%Y/%m/%d %H:%M:%S"}></td>
+        </tr>
+    <{/foreach}>
+</table>
+<{foreach from=$pageHTML key=page_name item=page_id}>
+    <a href="?pid=<{$page_id}>&uid=<{$input_data.uid}>&content=<{$input_data.content}>&handler=<{$input_data.handler}>&dateStart=<{$date_time.datestart}>&dateEnd=<{$date_time.dateEnd}>">
+        <{$page_name}>
+    </a>
+<{/foreach}>
+</div>
+<script>
+    $('#sub_btn').click(function(){
+        $('#action').val('set_condition');
+        $('#user_info').submit();
+    })
+    $('#do_execel').click(function(){
+        $('#action').val('do_execel');
+        $('#user_info').submit();
+    })
+    $('#edit_sub').click(function(){
+        $('#edit_area').submit();
+    })
+
+</script>
+
+</body>
+</html>

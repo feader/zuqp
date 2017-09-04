@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<style type="text/css">
+tr.focus {
+    background-color:#B0E2FF;
+}
+</style>
+
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tAgency tbody tr").click(function () {
+            $(this).parent().find("tr.focus").toggleClass("focus"); //取消原先选中行
+            $(this).toggleClass("focus"); //设定当前行为选中行
+        });
+    });
+</script>
+<link rel="stylesheet" href="../../../admin/static/css/public.css" type="text/css">
+<script type="text/javascript" src="../../../admin/static/js/public.js"></script>
+<title><{$_lang.left.recharge_record}></title>
+</head>
+
+<body>
+
+<div id="position">当前位置：代理系统 > 代理管理</div>
+<div>
+    <form action="agency_list.php" method="get" id="user_info">        
+        代理账号：<input type="text" name="uid" value="<{$input_data.uid}>" />
+        <div class='show_br'></div>
+        上级代理：<input type="text" name="uber_agency" value="<{$input_data.uber_agency}>" />
+        <div class='show_br'></div>
+        开始时间：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateStart" size="12" value="<{$date_time.datestart}>">
+        <div class='show_br'></div>
+        结束时间：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateEnd" size="12" value="<{$date_time.dateend}>">    
+        <div class='show_br'></div>
+        <input type="button" value="查询" id='sub_btn'>
+        <input type="hidden" value="" name="action" id='action'/>
+    </form>
+    <input type="button" value="导出" id='do_execel'/>
+</div>
+<div>
+<table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
+    <thead>
+    <tr class='table_list_head'>
+        <td>代理级别</td>
+        <td>上级代理</td>
+        <td>账号</td>
+        <td>昵称</td>
+        <td>充值钻石</td>
+        <td>充值金额</td>
+        <td>生成日期</td>
+        <td>备注</td>
+        <td>操作</td>
+    </tr>
+    </thead>
+
+    <tbody>
+    <{foreach item=agency from=$agency_list key=key}>
+        <tr class="<{cycle values='trOdd, trEven'}>">
+            <td>
+            <{if $agency.grade == '1'}> 皇冠
+            <{elseif $agency.grade == '2'}> 钻石
+            <{else $agency.grade == '3'}> 白金
+            <{/if}>
+            </td>
+            <td>
+                <{if $agency.uber_agency != ''}>
+                <{$agency.uber_agency}>
+                <{else}>
+                无上级
+                <{/if}>
+            </td>
+            <td><{$agency.uid}></td>
+            <td><{$agency.nick_name}></td>
+            <td><{$agency.recharge_dimond}></td>
+            <td><{$agency.recharge_money}></td>
+            <td><{$agency.register_time|date_format:"%Y/%m/%d"}></td>
+            <td><{$agency.note}></td>
+            <td>
+                 <{if $gid !=3}>
+                <a href="agent_edit.php?id=<{$agency.id}>">编辑</a>|
+               
+                <a href="agent_del.php?id=<{$agency.id}>">删除</a>
+                <{/if}>
+            </td>    
+        </tr>
+    <{/foreach}>
+    </tbody>
+</table>
+
+<{foreach from=$pageHTML key=page_name item=page_id}>
+    <a href="?pid=<{$page_id}>&uid=<{$input_data.uid}>&dateStart=<{$date_time.datestart}>&dateEnd=<{$date_time.dateend}>&uber_agency=<{$input_data.uber_agency}>"><{$page_name}></a>
+<{/foreach}>
+</div>
+
+<script>
+    $('#sub_btn').click(function(){
+        $('#action').val('search');
+        $('#user_info').submit();
+    })
+    $('#do_execel').click(function(){
+        $('#action').val('do_execel');
+        $('#user_info').submit();
+    })
+    $('#edit_sub').click(function(){
+        $('#edit_area').submit();
+    })
+
+</script>
+</body>
+</html>

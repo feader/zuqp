@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<style type="text/css">
+tr.focus {
+    background-color:#B0E2FF;
+}
+</style>
+
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tAgency tbody tr").click(function () {
+            $(this).parent().find("tr.focus").toggleClass("focus"); //取消原先选中行
+            $(this).toggleClass("focus"); //设定当前行为选中行
+        });
+    });
+</script>
+
+<title><{$_lang.left.recharge_record}></title>
+</head>
+
+<body>
+
+<div id="position">您当前位置：我的会员</div>
+<div>
+<table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
+    <thead>
+    <tr class='table_list_head'>
+        <td>会员ID</td>
+        <td>昵称</td>      
+        <td>累计充值金额</td>
+        <td>累计充值返利</td>
+        <td>级别</td>
+        <td>操作</td>
+    </tr>
+    </thead>
+
+    <tbody>
+    <{foreach item=leaguer from=$leaguer_list key=key}>
+        <tr class="<{cycle values='trOdd, trEven'}>">
+            <td><{$leaguer.uid}></td>
+            <td><{$leaguer.nick_name}></td>
+            <td><{$leaguer.recharge_money}></td>           
+            <td><{$leaguer.recharge_send_dimond}></td>
+            <td>
+            <{if $leaguer.grade == '1'}> 皇冠
+            <{elseif $leaguer.grade == '2'}> 钻石
+            <{elseif $leaguer.grade == '3'}> 白金
+            <{else}>
+                玩家
+            <{/if}>
+            </td>
+            <td><a href="../../../admin/module/agency/agency_charge_list.php?uid=<{$leaguer.uid}>">查看详情</a></td>
+        </tr>
+    <{/foreach}>
+    </tbody>
+</table>
+
+<{foreach from=$pageHTML key=page_name item=page_id}>
+    <a href="?pid=<{$page_id}>"><{$page_name}></a>
+<{/foreach}>
+</div>
+
+</body>
+</html>

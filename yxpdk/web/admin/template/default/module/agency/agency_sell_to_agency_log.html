@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<link rel="stylesheet" href="../../static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../static/css/style.css" type="text/css">
+<style type="text/css">
+tr.focus {
+    background-color:#B0E2FF;
+}
+</style>
+
+<script type="text/javascript" src="../../static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../static/js/My97DatePicker/WdatePicker.js"></script>
+<link rel="stylesheet" href="../../../admin/static/css/public.css" type="text/css">
+<script type="text/javascript" src="../../static/js/public.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tAgency tbody tr").click(function () {
+            $(this).parent().find("tr.focus").toggleClass("focus"); //取消原先选中行
+            $(this).toggleClass("focus"); //设定当前行为选中行
+        });
+    });
+</script>
+
+<title><{$_lang.left.recharge_record}></title>
+</head>
+
+<body>
+
+<div id="position">您当前位置：出售记录</div>
+
+<div class="total_data">
+    <table cellspacing="1" cellpadding="3" border="0" class='table_list'>
+        <tr class='table_list_head'>
+            <td>今天售卡</td>
+            <td>昨天售卡</td>
+            <td>上周售卡</td>
+        </tr>
+        <tr class="trOdd">
+            <td><{$total_data.today}></td>
+            <td><{$total_data.yesterday}></td>
+            <td><{$total_data.lastweek}></td>
+        </tr>
+    </table>
+</div>
+
+<div style="margin:30px auto;">
+    <form name="query" method="get" action="">
+        开始日期：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" id='dateStart' name='dateStart' size="12" value='<{$dateStart}>'/>       
+        <input type="submit" name="submit" value="按日期查询" />
+    </form>
+</div>
+
+<table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
+    <tr class='table_list_head'>
+        <td>代理名称</td>
+        <td>钻石数量</td>        
+        <td>时间</td>
+    </tr>
+    <{foreach item=log from=$log_list key=key}>
+        <tr class="<{cycle values='trOdd, trEven'}>">
+            <td><{$log.buy_agency_uid}></td>          
+            <td><{$log.dimond_num}></td>
+            <td><{$log.create_time|date_format:"%Y/%m/%d %H:%M:%S"}></td>
+        </tr>
+    <{/foreach}>
+</table>
+
+<{foreach from=$pageHTML key=page_name item=page_id}>
+    <a href="?pid=<{$page_id}>&dateStart=<{$dateStart}>"><{$page_name}></a>
+<{/foreach}>
+
+</body>
+</html>

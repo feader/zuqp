@@ -8,6 +8,7 @@ global $smarty,$db;
 function auto_everyday($db){
     auto_everyday_total_dimond_log($db);
     auto_everyday_use_dimond_log($db);
+    every_day_data_count($db);
 }
 
 function auto_everyday_total_dimond_log($db){
@@ -129,10 +130,6 @@ function retention($db,$n){
 
     $ciendToday_eight = $beginToday+86400;
 
-    $monthbegin = strtotime(date('Y')."-".date('m')."-1");
-
-    $monthend = strtotime(date('Y')."-".date('m')."-".date('t'))+86400-1;
-
     //n留注册的用户
     $sql_ciliu_register = "select count(DISTINCT uid) as reg_num from t_game_user where register_time between $beginToday and $endToday";
 
@@ -167,9 +164,7 @@ function retention($db,$n){
     $retention = $retention ==false ? 0 : $retention;
 
     $date_time = date('Y-m-d',$beginToday);
-    
-    $date_time1 = date('Y-m-d',$beginToday-86400);
-
+       
     $check_sql = "select id,data_time from t_data_count where data_time='$date_time'";
 
     $check = $db->get_one_info($check_sql);
@@ -178,19 +173,56 @@ function retention($db,$n){
 
     $key_retention = get_switch_data($n);
 
-    $acu_sql = "select sum(online) as online_num from t_online_log where dateline between $beginToday and $endToday";
+    if($check){
+
+        //$id = $check['id'];
+        
+        $data['action_time'] = time();
+
+        //n留数据
+        $data[$key_retention] = number_format($retention*100,2,".","");
+       
+        $res = $db->update_data($data,'t_data_count',"data_time = '$date_time'");
+
+    }
+   
+    echo $key_retention.' count complete!<br/>';
+    
+    return $res;
+
+}
+
+function every_day_data_count($db){
+
+    $cibeginToday = mktime(0,0,0,date('m'),date('d')-1,date('Y'));
+    //$cibeginToday = mktime(0,0,0,9,1,2017);
+
+    $ciendToday = $cibeginToday + 86400-1;
+
+    $monthbegin = strtotime(date('Y')."-".date('m')."-1");
+
+    $monthend = strtotime(date('Y')."-".date('m')."-".date('t'))+86400-1;
+
+    $date_time = date('Y-m-d',$cibeginToday);
+
+    $sql_ciliu_register = "select count(DISTINCT uid) as reg_num from t_game_user where register_time between $cibeginToday and $ciendToday";
+
+    $ciliu_register_res = $db->get_one_info($sql_ciliu_register);
+
+    $acu_sql = "select sum(online) as online_num from t_online_log where dateline between $cibeginToday and $ciendToday";
     //日平均在线人数
     $acu = $db->get_one_info($acu_sql);
 
-    $acu_res = number_format($acu['online_num']/(960),1,".","");
+    $acu_res = number_format($acu['online_num']/(1440),1,".","");
 
-    $aacu_sql = "select sum(online) as online_num from t_online_log where dateline between $cibeginToday and $ciendToday_eight";
+    $aacu_sql = "select sum(online) as online_num from t_online_log where dateline between $cibeginToday and $ciendToday";
 
     $aacu = $db->get_one_info($aacu_sql);
     //实时平均在线人数
     $aacu_res = number_format($acu['online_num']/(1440),1,".","");
 
-    $uv_sql = "select count(DISTINCT uid) as login_num from t_game_user_login_log where last_login_time between $beginToday and $endToday";
+    $uv_sql = "select count(DISTINCT uid) as login_num from t_game_user_login_log where last_login_time between $cibeginToday and $ciendToday";
+
     //当日登陆账号数
     $uv = $db->get_one_info($uv_sql);
 
@@ -198,7 +230,7 @@ function retention($db,$n){
     //付费用户数
     $pu = $db->get_one_info($pu_sql);
     
-    $all_register_sql = "select unionid from t_game_user where register_time < $beginToday";
+    $all_register_sql = "select unionid from t_game_user where register_time < $cibeginToday";
 
     //历史注册总量
     $all_reg_info = $db->fetchAll($all_register_sql);
@@ -215,7 +247,7 @@ function retention($db,$n){
 
     }
 
-    $dau_sql = "SELECT uid,sum(online_time) as total_online_time FROM t_game_user_login_log WHERE action = 'logout' and last_login_time between $beginToday and $endToday GROUP by uid";
+    $dau_sql = "SELECT uid,sum(online_time) as total_online_time FROM t_game_user_login_log WHERE action = 'logout' and last_login_time between $cibeginToday and $ciendToday GROUP by uid";
 
     //日活跃用户数
     $dau_info = $db->fetchAll($dau_sql);
@@ -302,7 +334,7 @@ function retention($db,$n){
 
     $mau_apa = count($mau_apa_info);
 
-    $dts_sql = "SELECT sum(online_time) as total_online_time FROM t_game_user_login_log WHERE action = 'logout' and last_login_time between $beginToday and $endToday";
+    $dts_sql = "SELECT sum(online_time) as total_online_time FROM t_game_user_login_log WHERE action = 'logout' and last_login_time between $cibeginToday and $ciendToday";
 
     $dts_info = $db->get_one_info($dts_sql);
 
@@ -315,7 +347,7 @@ function retention($db,$n){
     $mul = $mau_res/$all_reg;
 
     //活跃率
-    $rhyl_sql = "SELECT count(DISTINCT uid) as count_uid FROM t_game_user_login_log WHERE action = 'login' and last_login_time between $beginToday and $endToday";
+    $rhyl_sql = "SELECT count(DISTINCT uid) as count_uid FROM t_game_user_login_log WHERE action = 'login' and last_login_time between $cibeginToday and $ciendToday";
 
     $rhyl_info = $db->get_one_info($rhyl_sql);
 
@@ -366,90 +398,86 @@ function retention($db,$n){
     $au_res = $dau_res/$mau_res;
 
     $au_res = $au_res ? $au_res : 0;
+          
+    //昨天的各样基本数据统计   
+    $check_sql1 = "select id,data_time from t_data_count where data_time='$date_time'";
+
+    $check1 = $db->get_one_info($check_sql1);
+
+    $data1 = array();
+
+    $data1['register'] = $ciliu_register_res['reg_num'];
     
-    if($check){
+    $data1['total_cost_dimond'] = $user_cost_dimond['use_dimond'] ? $user_cost_dimond['use_dimond'] : 0;
 
-        //$id = $check['id'];
-        
-        $data['action_time'] = time();
+    $data['total_charge_money'] = $user_cost_money['charge_money'] ? $user_cost_money['charge_money'] : 0;
 
-        //n留数据
-        $data[$key_retention] = number_format($retention*100,2,".","");
-       
-        $res = $db->update_data($data,'t_data_count',"data_time = '$date_time'");
+    $data1['acu'] = $acu_res;
+   
+    $data1['aacu'] = $aacu_res;
+   
+    $data1['uv'] = $uv['login_num'];
+   
+    $data1['pu'] = $pu['count_num'];
+   
+    $data1['all_reg'] = $all_reg;
+   
+    $data1['dau'] = $dau_res;
+   
+    $data1['dau_apa'] = $dau_apa;
+   
+    $data1['mau'] = $mau_res;
+   
+    $data1['mau_apa'] = $mau_apa;
+   
+    $data1['dts'] = $dts;
+   
+    $data1['dul'] = $dul;
+   
+    $data1['mul'] = $mul;
+   
+    $data1['rhyl'] = $rhyl;
+   
+    $data1['marpu'] = $marpu_res;
+   
+    $data1['darpu'] = $darpu_res;
+   
+    $data1['dau_reg_ffl'] = $dau_reg_ffl;   
+   
+    $data1['dau_avg_online_ffl'] = !empty($dau_avg_online_ffl) ? $dau_avg_online_ffl : 0 ;   
+   
+    $data1['dau_nv_ffl'] = !empty($dau_nv_ffl) ? $dau_nv_ffl : 0 ;
+   
+    $data1['mau_reg_ffl'] = !empty($mau_reg_ffl) ? $mau_reg_ffl : 0 ;  
+   
+    $data1['mau_avg_online_ffl'] = !empty($mau_avg_online_ffl) ? $mau_avg_online_ffl : 0;   
+   
+    $data1['mau_nv_ffl'] = !empty($mau_nv_ffl) ? $mau_nv_ffl : 0 ;   
+   
+    $data1['au'] = $au_res;
+ 
+    $data1['action_time'] = time();
+
+    $data1['create_time'] = time();
+    
+    $data1['register'] = $ciliu_register_res['reg_num'];
+    
+    $data1['total_cost_dimond'] = $user_cost_dimond['use_dimond'] ? $user_cost_dimond['use_dimond'] : 0;
+
+    $data1['total_charge_money'] = $user_cost_money['charge_money'] ? $user_cost_money['charge_money'] : 0;
+
+    if($check1){
+
+        $res1 = $db->update_data($data1,'t_data_count',"data_time = '$date_time'");
 
     }else{
 
-        $data['register'] = $ciliu_register_res['reg_num'];
-        
-        $data['total_cost_dimond'] = $user_cost_dimond['use_dimond'] ? $user_cost_dimond['use_dimond'] : 0;
+        $data1['data_time'] = $date_time;
 
-        $data['total_charge_money'] = $user_cost_money['charge_money'] ? $user_cost_money['charge_money'] : 0;
-
-        $data['acu'] = $acu_res;
-       
-        $data['aacu'] = $aacu_res;
-       
-        $data['uv'] = $uv['login_num'];
-       
-        $data['pu'] = $pu['count_num'];
-       
-        $data['all_reg'] = $all_reg;
-       
-        $data['dau'] = $dau_res;
-       
-        $data['dau_apa'] = $dau_apa;
-       
-        $data['mau'] = $mau_res;
-       
-        $data['mau_apa'] = $mau_apa;
-       
-        $data['dts'] = $dts;
-       
-        $data['dul'] = $dul;
-       
-        $data['mul'] = $mul;
-       
-        $data['rhyl'] = $rhyl;
-       
-        $data['marpu'] = $marpu_res;
-       
-        $data['darpu'] = $darpu_res;
-       
-        $data['dau_reg_ffl'] = $dau_reg_ffl;   
-       
-        $data['dau_avg_online_ffl'] = $dau_avg_online_ffl;   
-       
-        $data['dau_nv_ffl'] = $dau_nv_ffl;
-       
-        $data['mau_reg_ffl'] = $mau_reg_ffl;  
-       
-        $data['mau_avg_online_ffl'] = $mau_avg_online_ffl;  
-       
-        $data['mau_nv_ffl'] = $mau_nv_ffl;   
-       
-        $data['au'] = $au_res;
-
-        $data['data_time'] = $date_time;
-
-        $data['action_time'] = time();
-    
-        $data['create_time'] = time();
-        
-        $data['register'] = $ciliu_register_res['reg_num'];
-        
-        $data['total_cost_dimond'] = $user_cost_dimond['use_dimond'] ? $user_cost_dimond['use_dimond'] : 0;
-
-        $data['total_charge_money'] = $user_cost_money['charge_money'] ? $user_cost_money['charge_money'] : 0;
-
-        $res = $db->insert_data($data,'t_data_count');
-
+        $res1 = $db->insert_data($data1,'t_data_count');
     }
 
-    echo $key_retention.' count complete!<br/>';
-    
-    return $res;
-
+    return 'every_day_data_count complete!<br/>';
 }
 
 function get_switch_data($n){

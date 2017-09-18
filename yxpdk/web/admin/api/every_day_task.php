@@ -215,11 +215,11 @@ function every_day_data_count($db){
 
     $acu_res = number_format($acu['online_num']/(1440),1,".","");
 
-    $aacu_sql = "select sum(online) as online_num from t_online_log where dateline between $cibeginToday and $ciendToday";
+    //$aacu_sql = "select sum(online) as online_num from t_online_log where dateline between $cibeginToday and $ciendToday";
 
-    $aacu = $db->get_one_info($aacu_sql);
+    //$aacu = $db->get_one_info($aacu_sql);
     //实时平均在线人数
-    $aacu_res = number_format($acu['online_num']/(1440),1,".","");
+    //$aacu_res = number_format($acu['online_num']/(1440),1,".","");
 
     $uv_sql = "select count(DISTINCT uid) as login_num from t_game_user_login_log where last_login_time between $cibeginToday and $ciendToday";
 
@@ -341,10 +341,10 @@ function every_day_data_count($db){
     $dts = number_format($dts_info['total_online_time']/($uv['login_num']),1,".","");
     
     //日用户流失率
-    $dul = $dau_res/$all_reg;
+    //$dul = $dau_res/$all_reg;
 
     //月用户流失率
-    $mul = $mau_res/$all_reg;
+    //$mul = $mau_res/$all_reg;
 
     //活跃率
     $rhyl_sql = "SELECT count(DISTINCT uid) as count_uid FROM t_game_user_login_log WHERE action = 'login' and last_login_time between $cibeginToday and $ciendToday";
@@ -391,13 +391,13 @@ function every_day_data_count($db){
     //付费率(实时)
     $mau_reg_ffl = $all_reg/$mau_apa;
 
-    $mau_avg_online_ffl = $aacu_res/$mau_apa;
+    $mau_avg_online_ffl = $acu_res/$mau_apa;
 
     $mau_nv_ffl = $uv['login_num']/$mau_apa;
     
-    $au_res = $dau_res/$mau_res;
+    // $au_res = $dau_res/$mau_res;
 
-    $au_res = $au_res ? $au_res : 0;
+    // $au_res = $au_res ? $au_res : 0;
           
     //昨天的各样基本数据统计   
     $check_sql1 = "select id,data_time from t_data_count where data_time='$date_time'";
@@ -414,7 +414,7 @@ function every_day_data_count($db){
 
     $data1['acu'] = $acu_res;
    
-    $data1['aacu'] = $aacu_res;
+    // $data1['aacu'] = $aacu_res;
    
     $data1['uv'] = $uv['login_num'];
    
@@ -432,9 +432,9 @@ function every_day_data_count($db){
    
     $data1['dts'] = $dts;
    
-    $data1['dul'] = $dul;
+    // $data1['dul'] = $dul;
    
-    $data1['mul'] = $mul;
+    // $data1['mul'] = $mul;
    
     $data1['rhyl'] = $rhyl;
    

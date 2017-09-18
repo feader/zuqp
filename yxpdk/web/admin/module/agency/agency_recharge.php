@@ -32,7 +32,7 @@ if ($action == 'recharge') {
 	$out_trade_no = make_order();
 
 	//订单名称，必填
-	$subject = '购买'.$dimond_cnt . '钻石，赠送' . $gift_dimond_cnt . '钻石';
+	$subject = '购买'.($dimond_cnt-$gift_dimond_cnt) . '钻石，赠送' . $gift_dimond_cnt . '钻石';
 
 	//付款金额，必填
 	// $total_fee = $_REQUEST['WIDtotal_fee'];

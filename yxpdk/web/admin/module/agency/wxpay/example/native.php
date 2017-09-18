@@ -35,7 +35,7 @@ $session_data = get_session($dbname);
 $auid = $session_data['auid'];
 $uid = $auid;
 
-$subject = '购买'.$dimond_cnt . "钻石，赠送" . $gift_dimond_cnt . "钻石";
+$subject = '购买'.($dimond_cnt-$gift_dimond_cnt) . "钻石，赠送" . $gift_dimond_cnt . "钻石";
 
 $order_id = make_order();
 $data = array();

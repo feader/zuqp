@@ -6,7 +6,7 @@ global $smarty, $db;
 
 $select_time = SS($_REQUEST['select_time']);
 if (empty($select_time)) {
-    $select_time = "one_day";
+	$select_time = "one_day";
 }
 
 $date_time = array();
@@ -30,7 +30,7 @@ $hour = date('H',$now);
 
 //当前在线人数
 // $sql_curr_online = 'SELECT online FROM `t_online_log` '
-//      . ' where dateline = '
+// 		. ' where dateline = '
 //         . ' ( select max( dateline ) from t_online_log ) '
 //         . ' group by dateline LIMIT 0, 30 ';
 
@@ -41,7 +41,7 @@ $now_online = $db->get_one_info($sql_curr_online);
 
 //今天在线数据
 // $sql_range_time = "select online, dateline from ".T_LOG_ONLINE
-//  ." where dateline > $time_range_left and dateline < $now order by dateline asc";
+// 	." where dateline > $time_range_left and dateline < $now order by dateline asc";
 $sql_range_time = "select online, dateline from `t_online_log` where dateline between $todayTime and $tomorrow order by dateline asc";    
 
 $today_result = $db->fetchAll($sql_range_time);
@@ -49,10 +49,10 @@ $today_data = '';
 $flag = false;
 foreach($today_result as $key=>$row)
 {
-    if($flag) $today_data .= ',';
-    $tmp = '[Date.UTC(' . strftime("%Y,%m,%d,%H,%M,%S", $row['dateline']) . '),' .$row['online'].']';
-    $today_data .= $tmp;
-    $flag = true;
+	if($flag) $today_data .= ',';
+	$tmp = '[Date.UTC(' . strftime("%Y,%m,%d,%H,%M,%S", $row['dateline']) . '),' .$row['online'].']';
+	$today_data .= $tmp;
+	$flag = true;
 }
 
 $today_str = strftime("%Y-%m-%d", time());

@@ -38,9 +38,9 @@
 
 <{foreach item=pay from=$pay_config key=key}>
     <div>
-        充值：<{$pay.dimond_cnt}>钻石 <br>
-        <!-- 赠送：<{$pay.gift_dimond_cnt}>钻石 <br> -->
+        充值：<{$pay.dimond_cnt-$pay.gift_dimond_cnt}>钻石 <br>
         价格：<{$pay.total_fee}>元 <br>
+        赠送：<span style='color:red;'><{$pay.gift_dimond_cnt}>钻石 <br>    </span> 
         支付宝：<input type="button" name="buy1" value="购买" onclick="Buy(<{$key+1}>)">&nbsp;&nbsp;&nbsp;&nbsp;
         <div class='show_br'></div>
         微信扫码支付：<input type="button" name="pay1" value="购买" onclick="Pay(<{$key+1}>)" class='wxpay'>

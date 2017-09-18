@@ -5,10 +5,37 @@
 <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
 <link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
 <link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+
 <style type="text/css">
 tr.focus {
     background-color:#B0E2FF;
 }
+ .black_overlay{ 
+    display: none; 
+    position: absolute; 
+    top: 0%; 
+    left: 0%; 
+    width: 100%; 
+    height: 100%; 
+    background-color: black; 
+    z-index:1001; 
+    -moz-opacity: 0.8; 
+    opacity:.80; 
+    filter: alpha(opacity=88); 
+} 
+.white_content { 
+    display: none; 
+    position: absolute; 
+    top: 25%; 
+    left: 25%; 
+    width: 55%; 
+    height: 55%; 
+    padding: 20px; 
+    border: 10px solid orange; 
+    background-color: white; 
+    z-index:1002; 
+    overflow: auto; 
+} 
 </style>
 
 <script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
@@ -58,6 +85,7 @@ tr.focus {
         <td>联系方式</td>      
         <td>状态</td>       
         <td>内容</td>       
+        <td>截图</td>       
         <td>回复</td>       
         <td>处理人</td>       
         <td>创建时间</td>       
@@ -80,9 +108,19 @@ tr.focus {
             </td>
             <td>
                 <{if $log_list.status == 0}>
-                <a href="<{$URL_SELF}>?page=<{$page}>&id=<{$log_list.id}>"><{$log_list.content}></a>
+                    <a href="<{$URL_SELF}>?page=<{$page}>&id=<{$log_list.id}>"><{$log_list.content}></a>
                 <{else}>
-                <{$log_list.content}>
+                    <{$log_list.content}>
+                <{/if}>
+            </td>
+            <td>
+                <{if $log_list.upload_img_part}>
+                    <{foreach item=img_list from=$log_list.upload_img_part key=key}>
+                        <img src="../..<{$img_list}>" style='width:200px;height:100px;' class='show_big'/>
+                        <input type="hidden" value="../..<{$img_list}>" />
+                    <{/foreach}>
+                <{else}>
+                    无截图
                 <{/if}>
             </td>
             <td><{$log_list.call_back}></td>
@@ -92,16 +130,19 @@ tr.focus {
         </tr>
         <{if $detail_info.id == $log_list.id}>
             <form action="user_complain.php" method="post" id="edit_area">
-            <tr>
-                <td>
-                    <textarea name="call_back" id="" cols="40" rows="5" placeholder='给玩家的回复填在此处'></textarea>
-                </td>
-                <td>
-                    <input type="button" value="提交" id="edit_sub" />
-                </td>
-            </tr>
-            <input type="hidden" name="id" value="<{$detail_info.id}>" />
-            <input type="hidden" name="action" value="edit_info" />
+                <tr>
+                    <td>
+                        <textarea name="call_back" id="" cols="40" rows="5" placeholder='给玩家的回复填在此处'></textarea>
+                    </td>
+                    <td>
+                        <input type="button" value="提交" id="edit_sub" />
+                    </td>
+                    <td>
+                        <input type="button" value="关闭" id='close_tr'/>
+                    </td>
+                </tr>
+                <input type="hidden" name="id" value="<{$detail_info.id}>" />
+                <input type="hidden" name="action" value="edit_info" />
             </form>
         <{/if}>
     <{/foreach}>
@@ -109,10 +150,18 @@ tr.focus {
     </tbody>
 </table>
 
+<div id="light" class="white_content">
+    <p>截图放大</p>
+    <img src="" id='big_img'/>
+    <br />
+    <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">点这里关闭本窗口</a>
+</div> 
+<div id="fade" class="black_overlay"></div> 
 
 <{foreach from=$pageHTML key=page_name item=page_id}>
     <a href="?pid=<{$page_id}>&handler=<{$handler}>&uid=<{$uid}>&dateStart=<{$date_time.datestart}>&dateEnd=<{$date_time.dateend}>"><{$page_name}></a>
 <{/foreach}>
+
 </div>
 <script>
     $('#sub_btn').click(function(){
@@ -126,7 +175,16 @@ tr.focus {
     $('#edit_sub').click(function(){
         $('#edit_area').submit();
     })
-
+    $('#close_tr').click(function(){
+        $('#edit_area').next().hide();
+    })
+    $('.show_big').click(function(){
+        var show_img_src = $(this).next().val();
+        $('#light').attr('style','display:block;');
+        $('#fade').attr('style','display:block;');
+        $('#big_img').attr('src',show_img_src);
+        //console.log(show_img_src);
+    })
 </script>
 </body>
 </html>

@@ -143,6 +143,24 @@ $resultCount = $db->fetchOne($sqlCount);
 $counts      = $resultCount['count'];
 $pageHTML    = getPages($page, $counts, 100);
 
+foreach ($user_list as $k => $v) {
+	
+	$num = strpos($v['upload_img'],'|');
+	
+	if($num){
+		
+		$res = explode('|',$v['upload_img']);
+		
+		$user_list[$k]['upload_img_part'] = $res;			
+		
+	}else{
+
+		$user_list[$k]['upload_img_part'] = $v['upload_img'];		
+
+	}
+	
+}
+
 $smarty->assign("pageHTML", $pageHTML);
 $smarty->assign("user_list", $user_list);
 $smarty->assign("date_time", $date_time);

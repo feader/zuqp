@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/My97DatePicker/WdatePicker.js"></script>
+<title>订单数据</title>
+</head>
+<body>
+<div id="position">订单数据</div>
+
+
+<div class='divOperation'>
+<form name="myform" method="get" action="game_data.php">
+APP ORDER ID：<input type="text" name='apporder' value='<{$input_data.apporder}>'/>
+PAY ORDER ID：<input type="text" name='sdkorder' value='<{$input_data.sdkorder}>'/>
+&nbsp;<{$_lang.conmon.start_time}>：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" id='dateStart' name='dateStart' size='12' value='<{$time_start}>'/>
+&nbsp;<{$_lang.conmon.end_time}>：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" id='dateEnd' name='dateEnd' size='12' value='<{$time_end}>'/>
+
+&nbsp;<input type="submit" name='search' class="input2"  />
+
+</form>
+</div>
+
+<table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
+    <thead>
+    <tr class='table_list_head'>
+        <td>序号</td>
+        <td>APP ORDER ID</td>       
+        <td>PAY ORDER ID</td>       
+        <td>金额（元）</td>                       
+        <td>实际支付金额（元）</td>                       
+        <td>签名</td>                       
+        <td>签名2</td>                       
+        <td>状态</td>                       
+        <td>订单支付时间</td>                       
+        <td>APP透传数据</td>                       
+        <td>类型</td>                       
+        <td>数据生成时间</td>                              
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <{foreach item=data_gather_list from=$pay_info_log key=key}>
+        <tr class="<{cycle values='trOdd, trEven'}>">         
+            <td><{$key+1}></td> 
+            <td><{$data_gather_list.apporder}></td> 
+            <td><{$data_gather_list.sdkorder}></td> 
+            <td><{$data_gather_list.amount/100}></td> 
+            <td><{$data_gather_list.real_amount/100}></td> 
+            <td><{$data_gather_list.sign}></td> 
+            <td><{$data_gather_list.sign2}></td> 
+            <td>
+            	<{if $data_gather_list.success==1}>
+					成功
+            	<{else}>
+					失败
+            	<{/if}>
+            </td> 
+            <td><{$data_gather_list.ts|date_format:"%Y/%m/%d %H:%I:%S"}></td> 
+            <td><{$data_gather_list.userdata}></td> 
+            <td>
+            	<{if $data_gather_list.test==1}>
+					测试数据
+            	<{else}>
+					上架通知
+            	<{/if}>
+            </td> 
+            <td><{$data_gather_list.create_time|date_format:"%Y/%m/%d %H:%I:%S"}></td>                                
+        </tr>
+    <{/foreach}>
+        
+    </tbody>
+</table>
+
+
+
+<{foreach from=$pageHTML key=page_name item=page_id}>
+    <a href="?pid=<{$page_id}>&dateStart=<{$time_start}>&dateEnd=<{$time_end}>"><{$page_name}></a>
+<{/foreach}>
+
+</body>
+</html>

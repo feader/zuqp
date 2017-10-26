@@ -64,6 +64,17 @@ if($action=='handle_dimond'){
 		
 		$agency_info = $db->get_one_info($agency_info_sql);
 
+		$log = array(
+
+			'auid' => $check[auid],
+			'diamond' => $check['get_money'],
+			'handler' => 'system',
+			'create_time' => time(),
+			'note' => '后台手动点击发放奖励房卡:'.$check['get_money'].'张',
+
+		);
+		
+
 		if($agency_info){
 			
 			$data2 = array();
@@ -73,12 +84,24 @@ if($action=='handle_dimond'){
 			$aid = $agency_info['id'];
 
 			$res1 = $db->update_data($data2,'t_agency',"id=$aid");
+
+			if($res1){
+				
+				$log_res = $db->insert_data($log,'t_agency_diamond_change_log');
+			
+			}
 	
+		}else{
+
+			$result['code'] = 0;
+		
+			$result['msg'] = '代理信息错误，发放失败！';
+		
 		}
 						
 		$res = $db->update_data($data,'t_money_back_log',"id=$id");	
 		
-		if($res){
+		if($res && $res1){
 		
 			$result['code'] = 1;
 		

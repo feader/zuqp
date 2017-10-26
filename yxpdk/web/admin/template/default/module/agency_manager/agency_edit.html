@@ -24,8 +24,10 @@
 	<form action="agent_save.php" method="post">
 		<p>代理：<{$detail.uid}></p>代理：
 		修改密码: <input type="password" name="pwd"  value=""> 
+        <br>       
 		<br>       
 		备注: <input type="text" name="note"  value="<{$detail.note}>"> 
+        <br>
 		<br>
         权限等级: 
         <select name="grade" id="">
@@ -35,6 +37,12 @@
             <option value="4" <{if $detail.grade==4}>selected<{/if}>>水晶</option>    
         </select>
         <br>
+        <br>
+        <{if $gid==1}>
+        上级代理：<input type="text" name='uber_agency' value="<{$detail.uber_agency}>" />
+        <br>
+        <br>
+        <{/if}>
 		<input type="hidden" value="<{$detail.id}>" name="id" />
 		<input name="submit" value="提交修改"  type="submit">
 		<br><br>

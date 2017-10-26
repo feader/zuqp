@@ -8,21 +8,22 @@ $session_data = get_session($dbname);
 $gid = $session_data['gid'];
 //管理端的代理列表
 $page  = getUrlParam('pid');
-$begin = ($page - 1) * 10;
+$begin = ($page - 1) * 20;
 
 
 $date_time = array();
 $date_time['datestart'] = date('Y-m-d',time());
 $date_time['dateend'] = date('Y-m-d',time()+86400);
-
+$where = '';
 
 if($_GET['action'] == 'search' ){
 
-	$dateStart = strtotime($_GET['dateStart']);
-	$dateEnd = strtotime($_GET['dateEnd']);
-	$where .= 'where register_time BETWEEN '.$dateStart.' and '.$dateEnd;
-	$date_time['datestart'] = date('Y-m-d',$dateStart);
-	$date_time['dateend'] = date('Y-m-d',$dateEnd);
+	// $dateStart = strtotime($_GET['dateStart']);
+	// $dateEnd = strtotime($_GET['dateEnd']);
+	// $where .= 'where register_time BETWEEN '.$dateStart.' and '.$dateEnd;
+	// $date_time['datestart'] = date('Y-m-d',$dateStart);
+	// $date_time['dateend'] = date('Y-m-d',$dateEnd);
+	$where .= 'where 1';
 	if(!empty($_GET['uid'])){
 		$uid = $_GET['uid'];
 		$where .= " and uid = '$uid'";
@@ -39,11 +40,12 @@ if($_GET['action'] == 'search' ){
 
 if($_GET['action'] == 'do_execel'){
 
-	$dateStart = strtotime($_GET['dateStart']);
-	$dateEnd = strtotime($_GET['dateEnd']);
-	$where .= 'where register_time BETWEEN '.$dateStart.' and '.$dateEnd;
-	$date_time['datestart'] = date('Y-m-d',$dateStart);
-	$date_time['dateend'] = date('Y-m-d',$dateEnd);
+	// $dateStart = strtotime($_GET['dateStart']);
+	// $dateEnd = strtotime($_GET['dateEnd']);
+	// $where .= 'where register_time BETWEEN '.$dateStart.' and '.$dateEnd;
+	// $date_time['datestart'] = date('Y-m-d',$dateStart);
+	// $date_time['dateend'] = date('Y-m-d',$dateEnd);
+	$where .= 'where 1';
 	if(!empty($_GET['uid'])){
 		$uid = $_GET['uid'];
 		$where .= " and uid = '$uid'";
@@ -117,13 +119,49 @@ if($_GET['action'] == 'do_execel'){
 	die;
 }
 
-$sql = "select * from t_agency $where ORDER BY register_time DESC LIMIT $begin, " . 10;
+$sql = "select * from t_agency $where ORDER BY register_time DESC LIMIT $begin, " . 20;
 $agency_list = $db->fetchAll($sql);
 
 $sqlCount    = "select count(1) as count from t_agency $where ORDER BY register_time DESC";
 $resultCount = $db->fetchOne($sqlCount);
 $counts      = $resultCount['count'];
-$pageHTML    = getPages($page, $counts, 10);
+$pageHTML    = getPages($page, $counts, 20);
+
+foreach ($agency_list as $k => $v) {
+	
+	$auid = $v['uid'];
+
+	$all_charge_sql = "SELECT sum(dimond_number) as charge_diamond FROM `t_recharge_log` where order_status = 1 and finish_time>0 and uid = '$auid'";
+	$all_charge = $db->get_one_info($all_charge_sql);
+	
+	if($all_charge['charge_diamond']){
+		$agency_list[$k]['charge_diamond'] = $all_charge['charge_diamond'];
+	}else{
+		$agency_list[$k]['charge_diamond'] = 0;
+	}
+
+	$all_sell_player_sql = "SELECT sum(dimond_num) as sell_player_diamond FROM `t_sell_log` where seller_uid = '$auid'";
+	$all_sell_player = $db->get_one_info($all_sell_player_sql);
+
+	if($all_sell_player['sell_player_diamond']){
+		$agency_list[$k]['sell_player_diamond'] = $all_sell_player['sell_player_diamond'];
+	}else{
+		$agency_list[$k]['sell_player_diamond'] = 0;
+	}
+
+	$all_sell_agqncy_sql = "SELECT sum(dimond_num) as sell_agency_diamond FROM `t_agency_sell_to_agency` where sell_agency_uid = '$auid'";
+	$all_sell_agqncy = $db->get_one_info($all_sell_agqncy_sql);
+
+	if($all_sell_player['sell_agency_diamond']){
+		$agency_list[$k]['sell_agency_diamond'] = $all_sell_player['sell_agency_diamond'];
+	}else{
+		$agency_list[$k]['sell_agency_diamond'] = 0;
+	}
+
+}
+
+
+
 
 $smarty->assign("pageHTML", $pageHTML);
 $smarty->assign("gid", $gid);

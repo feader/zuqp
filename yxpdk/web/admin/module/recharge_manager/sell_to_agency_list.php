@@ -18,6 +18,7 @@ $dateStart = strtotime($date_time['datestart']);
 $dateEnd = strtotime($date_time['dateend']);
 $where = 'where create_time BETWEEN '.$dateStart.' and '.$dateEnd;
 
+$gm_charge_sql = "SELECT sell_agency_uid,sum(dimond_num) as total_diamond FROM `t_agency_sell_to_agency` WHERE sell_agency_uid in('hg0001','hg0002') and create_time between 0 and $dateEnd group by sell_agency_uid";
 
 if($_GET['action'] == 'search' ){
 	$dateStart = strtotime($_GET['dateStart']);
@@ -36,14 +37,13 @@ if($_GET['action'] == 'search' ){
 	$input_data = array();
 	$input_data['sell_agency_uid'] = $sell_agency_uid;
 	$input_data['buy_agency_uid'] = $buy_agency_uid;
-
+	$gm_charge_sql = "SELECT sell_agency_uid,sum(dimond_num) as total_diamond FROM `t_agency_sell_to_agency` WHERE sell_agency_uid in('hg0001','hg0002') and create_time between $dateStart and $dateEnd group by sell_agency_uid";
 }
 
-
-
+$gm_charge_log = $db->fetchAll($gm_charge_sql);
 
 if($_GET['action'] == 'do_execel'){
-
+	$where = '';
 	$dateStart = strtotime($_GET['dateStart']);
 	$dateEnd = strtotime($_GET['dateEnd']);
 	$where .= 'where create_time BETWEEN '.$dateStart.' and '.$dateEnd;
@@ -127,8 +127,8 @@ $endYesterday = mktime(0,0,0,date('m'),date('d'),date('Y'))-1;
 $yesterday = get_count($beginYesterday,$endYesterday,'yesterday',$db);
 
 //上周代理给玩家售卡数
-$beginLastweek = mktime(0,0,0,date('m'),date('d')-7,date('Y'));
-$endLastweek = mktime(23,59,59,date('m'),date('d')-1,date('Y'))-1;
+$beginLastweek=mktime(0,0,0,date('m'),date('d')-date('w')+1-7,date('Y')); 
+$endLastweek=mktime(23,59,59,date('m'),date('d')-date('w')+7-7,date('Y'));
 $lastweek = get_count($beginLastweek,$endLastweek,'lastweek',$db);
 
 $user_sql = "select * from t_agency_sell_to_agency $where ORDER BY create_time DESC LIMIT $begin, " . 100;
@@ -137,6 +137,9 @@ $sqlCount    = "select count(*) as count from t_agency_sell_to_agency $where ORD
 $resultCount = $db->fetchOne($sqlCount);
 $counts      = $resultCount['count'];
 $pageHTML    = getPages($page, $counts, 100);
+
+$search_sql = "SELECT sum(dimond_num) AS all_dimond FROM t_agency_sell_to_agency $where";
+$search_dimond = $db->get_one_info($search_sql);
 
 $all_dimond_sql = "SELECT sum(dimond_num) AS all_dimond FROM t_agency_sell_to_agency";
 $all_dimond = $db->get_one_info($all_dimond_sql);
@@ -148,10 +151,12 @@ $total_data['lastweek'] = $lastweek;
 
 $smarty->assign("pageHTML", $pageHTML);
 $smarty->assign("user_list", $user_list);
+$smarty->assign("gm_charge_log", $gm_charge_log);
 $smarty->assign("date_time", $date_time);
 $smarty->assign("input_data", $input_data);
 $smarty->assign("total_data", $total_data);
 $smarty->assign("all_dimond", $all_dimond['all_dimond'] ? $all_dimond['all_dimond'] : 0);
+$smarty->assign("search_dimond", $search_dimond['all_dimond'] ? $search_dimond['all_dimond'] : 0);
 
 
 $smarty->display("module/recharge_manager/sell_to_agency_list.html");

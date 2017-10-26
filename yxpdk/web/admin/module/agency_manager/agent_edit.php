@@ -2,7 +2,10 @@
 define('IN_DATANG_SYSTEM', true);
 include "../../../config/config.php";
 include SYSDIR_ADMIN."/include/global.php";
-global $smarty, $db;
+global $smarty, $db,$dbConfig;
+$dbname = $dbConfig['dbname'];
+$session_data = get_session($dbname);
+$gid = $session_data['gid'];
 //管理端代理编辑
 $id = $_GET['id'];
 
@@ -24,6 +27,7 @@ $smarty->assign("agency_uid", $detail['uid']);
 $smarty->assign("notice", $notice['setting_value']);
 $smarty->assign("game_id", $game_id['setting_value']);
 $smarty->assign("fx_url", $fx_url['setting_value']);
+$smarty->assign("gid", $gid);
 
 $smarty->display("module/agency_manager/agency_edit.html");
 

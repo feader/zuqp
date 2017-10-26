@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/My97DatePicker/WdatePicker.js"></script>
+<title>订单查询</title>
+</head>
+<body>
+<div id="position">订单查询</div>
+
+
+
+<div class='divOperation'>
+<form name="myform" method="post" action="data_count.php">
+订单号：<input type="text" name="id" value="<{$input_data.id}>" />
+<select name="type" id="">
+    <option value="0" <{if $input_data.type==0}>selected<{/if}> >按PAY ORDER ID</option>
+    <option value="1" <{if $input_data.type==1}>selected<{/if}> >按APP ORDER ID</option>
+</select>
+&nbsp;<input type="submit" name='search' class="input2"  />
+
+</form>
+</div>
+
+<{if !empty($data_date)}>
+    <{if $data_date.resule==0}>
+        <table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
+            <thead>
+            <tr class='table_list_head'>
+                <td>订单ID</td>
+                <td>APPID</td>
+                <td>金额（元）</td>       
+                <td>实付金额（元）</td>       
+                <td>订单状态</td>       
+                <td>应用订单号</td>                       
+                <td>SDK_ORDER</td>                       
+                <td>订单支付时间</td>                       
+                <td>透传参数</td>                       
+                <td>订单创建时间</td>                       
+                <td>订单最后一次更新时间</td>                       
+                <td>商品ID</td>                       
+                <td>goods_id</td>                       
+                
+            </tr>
+            </thead>      
+                <tbody>
+                    <{foreach item=list_info from=$list key=key}>
+                        <tr>
+                            <td><{$list_info.id}></td>
+                            <td><{$list_info.app_id}></td>
+                            <td><{$list_info.amount/100}></td>
+                            <td><{$list_info.real}></td>
+                            <td><{$list_info.status}></td>
+                            <td><{$list_info.app_order}></td>
+                            <td><{$list_info.sdk_order}></td>
+                            <td><{$list_info.pay_time}></td>
+                            <td><{$list_info.user_data}></td>
+                            <td><{$list_info.cre_at}></td>
+                            <td><{$list_info.upd_at}></td>
+                            <td><{$list_info.goods_name}></td>
+                            <td><{$list_info.goods_id}></td>
+                        </tr>
+                    <{/foreach}>
+                </tbody>           
+        </table>
+    <{else}>
+        <p>错误信息：<{$data_date.msg}></p>
+    <{/if}>
+<{/if}>
+
+</body>
+</html>

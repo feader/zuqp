@@ -18,6 +18,7 @@ if(!empty($_POST['pwd'])){
 }
 $data['note'] = $_POST['note'];
 $data['grade'] = $_POST['grade'];
+$data['uber_agency'] = $_POST['uber_agency'];
 $where = "id = $id";
 
 $res = $db->update_data($data,'t_agency',$where);

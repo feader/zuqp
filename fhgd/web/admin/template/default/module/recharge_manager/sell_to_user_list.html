@@ -52,49 +52,57 @@ tr.focus {
 <div class="divOperation">
 
     <form name="myform" method="get" action="sell_to_user_list.php" id="user_info">
-    出售代理ID：<input type="text" name="seller_uid" value="<{$input_data.seller_uid}>" />
-    <div class='show_br'></div>
-    购买玩家ID：<input type="text" name="buyer_uid" value="<{$input_data.buyer_uid}>"/>
-    <div class='show_br'></div>
-    创建起始：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateStart" size="12" value="<{$date_time.datestart}>">
-    <div class='show_br'></div>
-    创建结束：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateEnd" size="12" value="<{$date_time.dateend}>">   
-    <div class='show_br'></div>
-    <input type="button" value="查询" id='sub_btn'>
-    <input type="hidden" value="" name="action" id='action'/>
+        出售代理ID：<input type="text" name="seller_uid" value="<{$input_data.seller_uid}>" />
+        <div class='show_br'></div>
+        购买玩家ID：<input type="text" name="buyer_uid" value="<{$input_data.buyer_uid}>"/>
+        <div class='show_br'></div>
+        创建起始：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateStart" size="12" value="<{$date_time.datestart}>">
+        <div class='show_br'></div>
+        创建结束：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateEnd" size="12" value="<{$date_time.dateend}>">   
+        <div class='show_br'></div>
+        <input type="button" value="查询" id='sub_btn'>
+        <input type="hidden" value="" name="action" id='action'/>
     </form>
+    <br />
+    <br />
+    <p>查询区间总购买钻石：<{$search_dimond}></p>
+
+    <{foreach item=sell_log from=$gm_sell_log key=key}>
+        <p>查询区间GM代理总出售记录：<{$sell_log.seller_uid}>:<{$sell_log.total_diamond}>张房卡</p>
+    <{/foreach}>
+    <br />
     <input type="button" value="导出" id='do_execel'/>
 </div>
 <br/>
 <table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
     <thead>
-    <tr class='table_list_head'>
-        <td>编号</td>
-        <td>出售代理ID</td>
-        <td>购买玩家ID</td>      
-        <td>玩家名</td>      
-        <td>购买钻石</td>              
-        <td>购买时间</td>              
-    </tr>
+        <tr class='table_list_head'>
+            <td>序号</td>
+            <td>出售代理ID</td>
+            <td>购买玩家ID</td>      
+            <td>玩家名</td>      
+            <td>购买钻石</td>              
+            <td>购买时间</td>              
+        </tr>
     </thead>
 
     <tbody>
-    <{foreach item=log_list from=$user_list key=key}>
-        <tr class="<{cycle values='trOdd, trEven'}>">
-            <td><{$log_list.id}></td>
-            <td><{$log_list.seller_uid}></td>
-            <td><{$log_list.buyer_uid}></td>
-            <td><{$log_list.buyer_name}></td>
-            <td><{$log_list.dimond_num}></td>       
-            <td><{$log_list.action_time|date_format:"%Y/%m/%d %H:%M:%S"}></td>                                              
-        </tr>
-    <{/foreach}>   
+        <{foreach item=log_list from=$user_list key=key}>
+            <tr class="<{cycle values='trOdd, trEven'}>">
+                <td><{$key+1}></td>
+                <td><{$log_list.seller_uid}></td>
+                <td><{$log_list.buyer_uid}></td>
+                <td><{$log_list.buyer_name}></td>
+                <td><{$log_list.dimond_num}></td>       
+                <td><{$log_list.action_time|date_format:"%Y/%m/%d %H:%M:%S"}></td>                                              
+            </tr>
+        <{/foreach}>   
     </tbody>
 </table>
 
 
 <{foreach from=$pageHTML key=page_name item=page_id}>
-    <a href="?pid=<{$page_id}>&dateStart=<{$date_time.datestart}>&dateEnd=<{$date_time.dateend}>&seller_uid=<{$input_data.seller_uid}>&buyer_uid=<{$input_data.buyer_uid}>"><{$page_name}></a>
+    <a href="?pid=<{$page_id}>&dateStart=<{$date_time.datestart}>&dateEnd=<{$date_time.dateend}>&seller_uid=<{$input_data.seller_uid}>&buyer_uid=<{$input_data.buyer_uid}>&action=search"><{$page_name}></a>
 <{/foreach}>
 </div>
 <script>

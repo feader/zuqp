@@ -21,7 +21,6 @@ $game_id = $db->get_one_info($game_id_sql);
 $fx_url_sql    = "select setting_value from t_system_setting where setting_name='fx_url'";
 $fx_url = $db->get_one_info($fx_url_sql);
 
-
 $smarty->assign("agency", $agency);
 $smarty->assign("notice", $notice['setting_value']);
 $smarty->assign("myself", $uid);

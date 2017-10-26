@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<style type="text/css">
+tr.focus {
+    background-color:#B0E2FF;
+}
+</style>
+
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tAgency tbody tr").click(function () {
+            $(this).parent().find("tr.focus").toggleClass("focus"); //取消原先选中行
+            $(this).toggleClass("focus"); //设定当前行为选中行
+        });
+    });
+</script>
+
+<title>管理员管理</title>
+</head>
+
+<body>
+
+<div id="position">当前位置：管理员管理</div>
+<div>
+<{if gid!=3 }>
+<a href="admin_new.php">添加管理员</a>
+<{/if}>
+
+<table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
+    <thead>
+    <tr class='table_list_head'>
+        <td>管理员级别</td>
+        <td>账号</td>              
+        <td>最后登录时间</td>              
+        <td>操作</td>
+    </tr>
+    </thead>
+
+    <tbody>
+    <{foreach item=admin_list from=$admin_list key=key}>
+        <tr class="<{cycle values='trOdd, trEven'}>">
+            <td>
+                <{$admin_list.gid}>
+            </td>
+            <td><{$admin_list.username}></td>         
+            <td>
+                <{if $admin_list.last_login_time !=0}>
+                <{$admin_list.last_login_time|date_format:"%Y/%m/%d %H:%M:%S"}>
+                <{else}>
+                无
+                <{/if}>
+            </td>                      
+            <td> 
+            <{if $gid==1}>       
+                <a href="admin_edit.php?uid=<{$admin_list.uid}>">编辑</a> | 
+                <a href="admin_del.php?uid=<{$admin_list.uid}>">删除</a>  
+            <{/if}>     
+            </td>          
+        </tr>
+    <{/foreach}>
+    </tbody>
+</table>
+
+<{foreach from=$pageHTML key=page_name item=page_id}>
+    <a href="?pid=<{$page_id}>"><{$page_name}></a>
+<{/foreach}>
+</div>
+
+<!-- <div>
+    <form name=search_condition method="post" action="recharge_order_list.php?action=set_condition">
+        <input type="submit" name="submit" value="重置密码" />
+        <input type="hidden" name="uid" value="<{$uid}>">
+    </form>
+</div> -->
+</body>
+</html>

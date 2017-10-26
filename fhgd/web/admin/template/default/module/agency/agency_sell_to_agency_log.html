@@ -24,7 +24,7 @@ tr.focus {
     });
 </script>
 
-<title><{$_lang.left.recharge_record}></title>
+<title>出售记录(代理)</title>
 </head>
 
 <body>
@@ -37,11 +37,13 @@ tr.focus {
             <td>今天售卡</td>
             <td>昨天售卡</td>
             <td>上周售卡</td>
+            <td>总售卡</td>
         </tr>
         <tr class="trOdd">
             <td><{$total_data.today}></td>
             <td><{$total_data.yesterday}></td>
             <td><{$total_data.lastweek}></td>
+            <td><{$total_data.all}></td>
         </tr>
     </table>
 </div>
@@ -52,11 +54,15 @@ tr.focus {
         <input type="submit" name="submit" value="按日期查询" />
     </form>
 </div>
+    
+<div>
+    <p>查询区间总售卡：<{$search.total_diamond_num}></p>
+</div>
 
 <table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
     <tr class='table_list_head'>
         <td>代理名称</td>
-        <td>钻石数量</td>        
+        <td>房卡数量</td>        
         <td>时间</td>
     </tr>
     <{foreach item=log from=$log_list key=key}>

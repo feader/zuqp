@@ -52,47 +52,56 @@ tr.focus {
 <div class="divOperation">
 
     <form name="myform" method="get" action="sell_to_agency_list.php" id="user_info">
-    出售代理ID：<input type="text" name="sell_agency_uid" value="<{$input_data.sell_agency_uid}>" />
-    <div class='show_br'></div>
-    购买代理ID：<input type="text" name="buy_agency_uid" value="<{$input_data.buy_agency_uid}>"/>
-    <div class='show_br'></div>
-    创建起始：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateStart" size="12" value="<{$date_time.datestart}>">
-    <div class='show_br'></div>
-    创建结束：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateEnd" size="12" value="<{$date_time.dateend}>">   
-    <div class='show_br'></div>
-    <input type="button" value="查询" id='sub_btn'>
-    <input type="hidden" value="" name="action" id='action'/>
+        出售代理ID：<input type="text" name="sell_agency_uid" value="<{$input_data.sell_agency_uid}>" />
+        <div class='show_br'></div>
+        购买代理ID：<input type="text" name="buy_agency_uid" value="<{$input_data.buy_agency_uid}>"/>
+        <div class='show_br'></div>
+        创建起始：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateStart" size="12" value="<{$date_time.datestart}>">
+        <div class='show_br'></div>
+        创建结束：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateEnd" size="12" value="<{$date_time.dateend}>">   
+        <div class='show_br'></div>
+        <input type="button" value="查询" id='sub_btn'>
+        <input type="hidden" value="" name="action" id='action'/>
     </form>
+    <br />
+    <p>查询区间总出售钻石：<{$search_dimond}></p>
+    <{foreach item=charge_log from=$gm_charge_log key=key}>
+        <p>查询区间GM代理总出售记录：<{$charge_log.sell_agency_uid}>:<{$charge_log.total_diamond}>张房卡</p>
+    <{/foreach}>
+
+    <br />
     <input type="button" value="导出" id='do_execel'/>
 </div>
+
 <br/>
+
 <table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
     <thead>
-    <tr class='table_list_head'>
-        <td>编号</td>
-        <td>出售代理ID</td>
-        <td>购买代理ID</td>      
-        <td>出售钻石</td>              
-        <td>出售时间</td>              
-    </tr>
+        <tr class='table_list_head'>
+            <td>序号</td>       
+            <td>出售代理ID</td>
+            <td>购买代理ID</td>      
+            <td>出售钻石</td>              
+            <td>出售时间</td>              
+        </tr>
     </thead>
 
     <tbody>
-    <{foreach item=log_list from=$user_list key=key}>
-        <tr class="<{cycle values='trOdd, trEven'}>">
-            <td><{$log_list.id}></td>
-            <td><{$log_list.sell_agency_uid}></td>
-            <td><{$log_list.buy_agency_uid}></td>
-            <td><{$log_list.dimond_num}></td>       
-            <td><{$log_list.create_time|date_format:"%Y/%m/%d %H:%M:%S"}></td>                                              
-        </tr>
-    <{/foreach}>   
+        <{foreach item=log_list from=$user_list key=key}>
+            <tr class="<{cycle values='trOdd, trEven'}>">
+                <td><{$key+1}></td>
+                <td><{$log_list.sell_agency_uid}></td>
+                <td><{$log_list.buy_agency_uid}></td>
+                <td><{$log_list.dimond_num}></td>       
+                <td><{$log_list.create_time|date_format:"%Y/%m/%d %H:%M:%S"}></td>                                              
+            </tr>
+        <{/foreach}>   
     </tbody>
 </table>
 
 
 <{foreach from=$pageHTML key=page_name item=page_id}>
-    <a href="?pid=<{$page_id}>&dateStart=<{$date_time.datestart}>&dateEnd=<{$date_time.dateend}>&sell_agency_uid=<{$input_data.sell_agency_uid}>&buy_agency_uid=<{$input_data.buy_agency_uid}>"><{$page_name}></a>
+    <a href="?pid=<{$page_id}>&dateStart=<{$date_time.datestart}>&dateEnd=<{$date_time.dateend}>&sell_agency_uid=<{$input_data.sell_agency_uid}>&buy_agency_uid=<{$input_data.buy_agency_uid}>&action=search"><{$page_name}></a>
 <{/foreach}>
 </div>
 <script>

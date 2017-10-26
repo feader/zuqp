@@ -249,4 +249,15 @@ class DBClass
 	}
 	return $value;
 	}
+
+	function write_with_open($filename,$str){
+	
+		$fp = fopen('../logs/'.$filename, 'a') or die("can't open $filename for write");
+
+		$str .= "\r\n";
+		
+		fwrite($fp, $str);
+
+		fclose($fp);
+	}
 }

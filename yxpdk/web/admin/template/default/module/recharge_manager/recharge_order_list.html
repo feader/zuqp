@@ -19,25 +19,33 @@
 
 <div>
     <form method="get" action="recharge_order_list.php" id="user_info">
-    代理ID：<input type="text" name="uid" value="<{$input_data.uid}>" />
-    <div class='show_br'></div>
-    订单号：<input type="text" name="order_id" value="<{$input_data.order_id}>" />
-    <div class='show_br'></div>
-    支付号：<input type="text" name="alipay_order_id" value="<{$input_data.alipay_order_id}>" />
-    <div class='show_br'></div>
-    创建起始：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateStart" size="12" value="<{$data_time.datestart}>">
-    <div class='show_br'></div>
-    创建结束：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateEnd" size="12" value="<{$data_time.dateend}>">   
-    <div class='show_br'></div>
-    <input  type="button" value="查询" id='sub_btn' />       
-    <input type="hidden" name="action" value="" id='action'/>       
+        代理ID：<input type="text" name="uid" value="<{$input_data.uid}>" />
+        <div class='show_br'></div>
+        订单号：<input type="text" name="order_id" value="<{$input_data.order_id}>" />
+        <div class='show_br'></div>
+        支付号：<input type="text" name="alipay_order_id" value="<{$input_data.alipay_order_id}>" />
+        <div class='show_br'></div>
+        创建起始：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateStart" size="12" value="<{$input_data.datestart}>">
+        <div class='show_br'></div>
+        创建结束：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateEnd" size="12" value="<{$input_data.dateend}>">   
+        <div class='show_br'></div>
+        是否支付：
+        <select name="status">
+            <option value="2">全部</option>
+            <option value="1" <{if $input_data.status==1}>selected<{/if}> >已支付</option>
+            <option value="0" <{if $input_data.status==0}>selected<{/if}> >未支付</option>
+        </select>
+        <input  type="button" value="查询" id='sub_btn' />       
+        <input type="hidden" name="action" value="" id='action'/>       
     </form>
-    <span>总充值金额:<{$total_charge}>元</span>
+    <span>总充值金额:<{$total_charge}>元</span><br />
+    <span>查询区间已支付金额:<{$search_charge}>元</span><br />
     <input type="button" value="导出" id='do_execel'/>
 </div>
 
 <table cellspacing="1" cellpadding="3" border="0" class='table_list' >
     <tr class='table_list_head'>
+        <td>序号</td>
         <td>代理ID</td>
         <td>订单号</td>
         <td>支付号</td>
@@ -50,6 +58,7 @@
 
     <{foreach item=order from=$order_list key=key}>
         <tr class="<{cycle values='trOdd, trEven'}>">
+            <td><{$key+1}></td>
             <td><{$order.uid}></td>
             <td><{$order.order_id}></td>
             <td><{$order.alipay_order_id}></td>
@@ -73,11 +82,13 @@
         </tr>
     <{/foreach}>
 </table>
+
 <{foreach from=$pageHTML key=page_name item=page_id}>
-    <a href="?pid=<{$page_id}>&uid=<{$input_data.uid}>&order_id=<{$input_data.order_id}>&alipay_order_id=<{$input_data.alipay_order_id}>&dateStart=<{$date_time.datestart}>&dateEnd=<{$date_time.dateEnd}>">
+    <a href="?pid=<{$page_id}>&uid=<{$input_data.uid}>&order_id=<{$input_data.order_id}>&alipay_order_id=<{$input_data.alipay_order_id}>&dateStart=<{$input_data.datestart}>&dateEnd=<{$input_data.dateend}>&status=<{$input_data.status}>&action=set_condition">
         <{$page_name}>
     </a>
 <{/foreach}>
+
 </div>
 <script>
     $('#sub_btn').click(function(){

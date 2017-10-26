@@ -5,7 +5,7 @@ include SYSDIR_ADMIN . '/include/global.php';
 global $smarty, $db;
 
 $page = getUrlParam('pid');
-$begin = ($page - 1) * LIST_PER_PAGE_RECORDS;
+$begin = ($page - 1) * 20;
 $where = '';
 //充值订单
 $action = trim($_GET['action']);
@@ -39,26 +39,51 @@ if ($action == 'set_condition') {
         $date_end = $_GET['dateEnd'];
         $end_time = strtotime($date_end);
         $where .= " AND create_time <= $end_time ";
+    }else{
+        $end_time = strtotime(date('Y-m-d',time()+86400));
     }
 
-    $sql .= $where . " ORDER BY order_status desc,create_time DESC LIMIT $begin, " . LIST_PER_PAGE_RECORDS;
-    
+    $status = $_GET['status'];
+    $where1 = '';
+
+    switch ($status) {
+        case '0':
+            $where1 .= $where.' AND order_status = 1';
+            $where .= " AND order_status = '$status' ";
+            break;
+        case '1':         
+            $where .= " AND order_status = '$status' ";
+            $where1 .= $where;
+            break;
+        case '1':
+            $where1 .= $where.' AND order_status = 1';
+            $where .= '';
+            break;    
+        default:
+            $where1 .= $where.' AND order_status = 1';  
+            $where .= '';
+            break;
+    }
+
+    $sql .= $where . " ORDER BY order_status desc,create_time DESC LIMIT $begin,20";
+
     $order_list = $db->fetchAll($sql);
 
-    $data_time = array();
-    $data_time['datestart'] = date('Y-m-d',$start_time);
-    $data_time['dateend'] = date('Y-m-d',$end_time);
+    $search_charge_sql = "select sum(money_number) as total_money from t_recharge_log $where1";
+    $search_charge = $db->fetchOne($search_charge_sql);
 
     $input_data = array();
     $input_data['order_id'] = $order_id;
     $input_data['uid'] = $uid;
     $input_data['alipay_order_id'] = $alipay_order_id;
-
-    
+    $input_data['status'] = $_GET['status'];
+    $input_data['datestart'] = date('Y-m-d',$start_time);
+    $input_data['dateend'] = date('Y-m-d',$end_time);
+  
 }else{
 
     $sql = "select * from t_recharge_log ";
-    $sql .= $where . " ORDER BY order_status desc,create_time DESC LIMIT $begin, " . LIST_PER_PAGE_RECORDS;
+    $sql .= $where . " ORDER BY order_status desc,create_time DESC LIMIT $begin,20";
     $order_list = $db->fetchAll($sql);
 
 
@@ -166,10 +191,11 @@ $total_charge = $db->fetchOne($total_charge_sql);
 $sqlCount = "select count(1) as count from t_recharge_log $where ORDER BY order_status desc,action_time DESC";
 $resultCount = $db->fetchOne($sqlCount);
 $counts = $resultCount['count'];
-$pageHTML = getPages($page, $counts, LIST_PER_PAGE_RECORDS);
+$pageHTML = getPages($page, $counts, 20);
 
 $smarty->assign("uid", $uid);
 $smarty->assign("total_charge", $total_charge['total_money']/100);
+$smarty->assign("search_charge", $search_charge['total_money']/100);
 $smarty->assign("pageHTML", $pageHTML);
 $smarty->assign("order_list", $order_list);
 $smarty->assign("data_time", $data_time);

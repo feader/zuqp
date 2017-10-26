@@ -8,7 +8,7 @@ global $smarty, $db;
 if (!isset($_REQUEST['dateStart'])) {
 	$t = time();
     $start_day = mktime(0,0,0,1,1,date('Y',$t)); 
-    $end_day = mktime(23,59,59,date('m',$t),date('t'),date('Y',$t)); 
+    $end_day = mktime(23,59,59,date('m',$t)+1,date('t'),date('Y',$t)); 
     $dateStart = strftime("%Y-%m", $start_day);
     $dateEnd = strftime("%Y-%m", $end_day);
 } else {

@@ -34,22 +34,24 @@ tr.focus {
 <div class="divOperation">
 
     <form name="myform" method="get" action="dimond_used_list.php" id="user_info">
-    会员ID：<input type="text" name="uid" value="<{$uid}>" />
-    <div class='show_br'></div>
-    创建起始：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateStart" size="12" value="<{$date_time.datestart}>">
-    <div class='show_br'></div>
-    创建结束：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateEnd" size="12" value="<{$date_time.dateend}>"> 
-    <div class='show_br'></div>  
-    <input type="button" value="查询" id='sub_btn'>
-    <input type="hidden" value="" name="action" id='action'/>
+        会员ID：<input type="text" name="uid" value="<{$uid}>" />
+        <div class='show_br'></div>
+        创建起始：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateStart" size="12" value="<{$date_time.datestart}>">
+        <div class='show_br'></div>
+        创建结束：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateEnd" size="12" value="<{$date_time.dateend}>"> 
+        <div class='show_br'></div>  
+        <input type="button" value="查询" id='sub_btn'>
+        <input type="hidden" value="" name="action" id='action'/>
     </form>
-    <span>总消耗房卡:<{$all_cost}></span>
+    <span>总消耗房卡:<{$all_cost}></span><br />
+    <span>查询玩家所消耗房卡:<{$search_cost}></span><br />
     <input type="button" value="导出" id='do_execel'/>
 </div>
 <br/>
 <table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
     <thead>
     <tr class='table_list_head'>
+        <td>排序</td>
         <td>编号</td>
         <td>玩家ID</td>
         <td>消耗时间</td>      
@@ -60,6 +62,7 @@ tr.focus {
     <tbody>
     <{foreach item=log_list from=$user_list key=key}>
         <tr class="<{cycle values='trOdd, trEven'}>">
+            <td><{$key+1}></td>
             <td><{$log_list.id}></td>
             <td><{$log_list.uid}></td>
             <td><{$log_list.use_time|date_format:"%Y/%m/%d %H:%M:%S"}></td>        
@@ -71,7 +74,7 @@ tr.focus {
 
 
 <{foreach from=$pageHTML key=page_name item=page_id}>
-    <a href="?pid=<{$page_id}>&dateStart=<{$date_time.datestart}>&dateEnd=<{$date_time.dateend}>&uid=<{$uid}>"><{$page_name}></a>
+    <a href="?uid=<{$uid}>&dateStart=<{$date_time.datestart}>&dateEnd=<{$date_time.dateend}>&pid=<{$page_id}>&action=search"><{$page_name}></a>
 <{/foreach}>
 </div>
 <script>

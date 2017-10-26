@@ -60,12 +60,12 @@ function handle_agency_charge() {
 		data:{dimond_number:dimond_number,username:username},
 		dataType:'json',
 		success:function(res){
-			if(res){
-				alert('出售完成！');
+			if(res.code==1){
+				alert(res.msg+'！');
 				location.href='agency_sell_to_agency.php';			
 			}else{
-				alert('出售失败！');
-				location.href='agency_sell.php';		
+				alert(res.msg+'！');
+				location.href='agency_sell_to_agency.php';		
 			}
 		} 
 	})

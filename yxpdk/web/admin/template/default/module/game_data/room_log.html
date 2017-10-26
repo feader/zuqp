@@ -39,12 +39,16 @@
         </tr>
     </table>
 </div>
+<div>
+    <p>搜索区间的开房数量：<{$search_counts}></p>
+</div>
 
 <table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
     <thead>
         <tr class='table_list_head'>
             <td>序号</td>
             <td>房间号</td>       
+            <td>房主</td>       
             <td>参与游戏玩家UID</td>       
             <td>开房时间</td>                             
             <td>结束时间</td>                             
@@ -58,6 +62,7 @@
         <tr class="<{cycle values='trOdd, trEven'}>">         
             <td><{$key+1}></td> 
             <td><{$room_log_list.room_id}></td>
+            <td><{$room_log_list.room_master}></td>
             <td>                
                 <{if $room_log_list.uids!=''}>
                     <{$room_log_list.uids}>

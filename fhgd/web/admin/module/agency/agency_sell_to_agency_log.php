@@ -27,9 +27,12 @@ $begin = ($page - 1) * LIST_PER_PAGE_RECORDS;
 
 $sql = "SELECT * FROM t_agency_sell_to_agency WHERE sell_agency_uid = '$uid' ".$where."ORDER BY create_time DESC LIMIT $begin, " . LIST_PER_PAGE_RECORDS;
 $sql1 = "SELECT count(*) as count FROM t_agency_sell_to_agency WHERE sell_agency_uid = '$uid' ".$where;
+$sql2 = "SELECT sum(dimond_num) as total_diamond_num FROM t_agency_sell_to_agency WHERE sell_agency_uid = '$uid' ".$where;
 
 $log_list = $db->fetchAll($sql);
 $count = $db->fetchAll($sql1);
+$search = $db->get_one_info($sql2);
+
 //print_r($sql);
 //print_r($_SESSION);
 
@@ -48,10 +51,14 @@ $beginLastweek = mktime(0,0,0,date('m'),date('d')-7,date('Y'));
 $endLastweek = mktime(23,59,59,date('m'),date('d')-1,date('Y'))-1;
 $lastweek = get_count($beginLastweek,$endLastweek,$uid,'lastweek',$db);
 
+//此代理给其它代理总售卡数
+$all = get_count(0,$endToday,$uid,'all_sell',$db);
+
 $total_data = array();
-$total_data['today'] = $today;
-$total_data['yesterday'] = $yesterday;
-$total_data['lastweek'] = $lastweek;
+$total_data['today'] = $today ? $today : 0;
+$total_data['yesterday'] = $yesterday ? $yesterday : 0;
+$total_data['lastweek'] = $lastweek ? $lastweek : 0;
+$total_data['all'] = $all ? $all : 0;
 
 $pageHTML    = getPages($page, $count['count'], LIST_PER_PAGE_RECORDS);
 
@@ -61,11 +68,12 @@ $smarty->assign("pageHTML", $pageHTML);
 $smarty->assign("total_cnt", $count);
 $smarty->assign("total_data", $total_data);
 $smarty->assign("log_list", $log_list);
+$smarty->assign("search", $search);
 $smarty->display("module/agency/agency_sell_to_agency_log.html");
 
 function get_count($start,$end,$uid,$name,$db){
 	$data = array();
-	$sql = "SELECT count(*) AS $name FROM t_agency_sell_to_agency WHERE sell_agency_uid = '$uid' and create_time between $start and $end";
+	$sql = "SELECT sum(dimond_num) AS $name FROM t_agency_sell_to_agency WHERE sell_agency_uid = '$uid' and create_time between $start and $end";
 	$data = $db->get_one_info($sql);
 	return $data[$name];
 }

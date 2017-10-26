@@ -44,10 +44,9 @@ if(!empty($agency_invite_user)){
 $cost_sql = "select * from t_user_dimond_log where uid $str order by use_time LIMIT $begin, " . 100;
 $agency_invite_user_cost = $db->fetchAll($cost_sql);
 
+$where = 'where 1';
 
 if(!empty($_GET)){
-
-	$where = 'where 1';
 
 	$date_time = array();
 	
@@ -65,7 +64,7 @@ if(!empty($_GET)){
 		}
 		
 		$smarty->assign("uid", $_GET['uid']);
-		
+
 	}else{
 
 		$where .= " and uid $str";
@@ -110,17 +109,22 @@ if(!empty($_GET)){
 		
 	}
 
-$cost_sql = "select * from t_user_dimond_log $where order by use_time LIMIT $begin, " . 100;
-$agency_invite_user_cost = $db->fetchAll($cost_sql);
+	$cost_sql = "select * from t_user_dimond_log $where order by use_time LIMIT $begin, " . 100;
+	$agency_invite_user_cost = $db->fetchAll($cost_sql);
 
-$sqlCount = "select count(*) as count from t_user_dimond_log where uid = '$uid' ORDER BY use_time DESC";
+	$sqlCount = "select count(*) as count from t_user_dimond_log where uid = '$uid' ORDER BY use_time DESC";
+
+	$search_sql = "select sum(use_dimond) as total_diamond from t_user_dimond_log where uid = '$uid'";
 
 }else{
 
 	$sqlCount = "select count(*) as count from t_user_dimond_log where uid $str ORDER BY use_time DESC";
 
+	$search_sql = "select sum(use_dimond) as total_diamond from t_user_dimond_log where uid $str";
+
 }
 
+$search = $db->get_one_info($search_sql);
 
 $smarty->assign("date_time", $date_time);
 
@@ -129,5 +133,6 @@ $counts      = $resultCount['count'];
 $pageHTML    = getPages($page, $counts, 100);
 
 $smarty->assign("pageHTML", $pageHTML);
+$smarty->assign("search", $search);
 $smarty->assign("agency_invite_user_cost", $agency_invite_user_cost);
 $smarty->display("module/agency/agency_invite_user_dimond_used_list.html");

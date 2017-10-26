@@ -2,6 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
 <title>出售(玩家)</title>
 <link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
 <link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
@@ -63,11 +66,12 @@ function handle_user_charge() {
 		data:{dimond_number:dimond_number,username:username,userid:userid},
 		dataType:'json',
 		success:function(res){
-			if(res){
-				alert('出售完成！');
+			console.log(res);
+			if(res.code==1){
+				alert(res.msg+'！');
 				location.href='agency_sell.php';			
 			}else{
-				alert('出售失败！');
+				alert(res.msg+'！');
 				location.href='agency_sell.php';		
 			}
 		} 
@@ -82,15 +86,15 @@ function handle_user_charge() {
  <body>
  <div id="position">您当前位置：出售界面</div>
 	<div>
-		第一步：输入玩家用户UID <br>
-	 	<input type="text" name="uid" id="uid" value="" > <br>
-	 	第二步：搜索玩家 <br>
+		第一步：输入玩家用户UID <br><br>
+	 	<input type="text" name="uid" id="uid" value="" > <br><br>
+	 	第二步：搜索玩家 <br><br>
 	 	<input name="search" value="搜索" onclick="search_user()" type="button"><br><br>
 	</div>
  		
 	<div style="display:none" id='second_step'>
-		第三步：确定添加 <br>
-		<input type="text" name="dimond_number" id="dimond_number" value="0"> <br>
+		第三步：输入房卡数量，确认无误后点击'<span style='color:red;'>确定添加</span>' <br><br>
+		<input type="text" name="dimond_number" id="dimond_number" value="0"> <br><br>
 		<input name="search" value="确定添加" onclick="handle_user_charge()" type="button" class="handle_user_charge"><br><br>
 		<input type="hidden" name="username" value="" id="username" />
 		<input type="hidden" name="userid" value="" id="userid" />

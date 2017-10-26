@@ -45,8 +45,12 @@ function every_agency_get_money($db){
 			$data['back_money'] = $back_money;
 			$data['back_date'] = $back_date;
 			$data['back_create_time'] = time();
-			$data['auid'] = $auid;
-
+			if(!empty($auid)){
+				$data['auid'] = $auid;
+			}else{
+				$data['auid'] = '无';
+			}
+			
 			$check_sql = "select id from t_every_month_money_back where back_date = '$back_date' and auid='$auid'";		
 			$check = $db->get_one_info($check_sql);
 

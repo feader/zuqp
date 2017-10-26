@@ -244,6 +244,8 @@ class AuthClass
 			'83' => array("man_id" => '83', "desc" => "代理首页公告", "url" =>'module/agency_manager/agency_index_note.php', "man_type"=>'AGENCY_MANAGER'),
 			'84' => array("man_id" => '84', "desc" => "代理返卡", "url" =>'module/agency_manager/agency_get_dimond_back_log.php', "man_type"=>'AGENCY_MANAGER'),
 			'85' => array("man_id" => '85', "desc" => "代理返现", "url" =>'module/agency_manager/agency_get_money_back_log.php', "man_type"=>'AGENCY_MANAGER'),
+			'86' => array("man_id" => '86', "desc" => "代理房卡调整", "url" =>'module/agency_manager/agency_diamond_change.php', "man_type"=>'AGENCY_MANAGER'),
+			'87' => array("man_id" => '87', "desc" => "房卡调整记录", "url" =>'module/agency_manager/agency_diamond_change_log.php', "man_type"=>'AGENCY_MANAGER'),
 			
 			//管理员系统(100~119)
 			'100' => array("man_id" => '100', "desc" => "管理员管理", "url" =>'module/admin/admin_list.php', "man_type"=>'ADMIN_MANAGER'),

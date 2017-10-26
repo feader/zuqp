@@ -11,10 +11,10 @@ require_once "../lib/WxPay.Api.php";
 require_once '../lib/WxPay.Notify.php';
 require_once 'log.php';
 
-// $data = array();
-// // $data['text_conent'] = $_POST;
-// $data['text_conent'] = $GLOBALS['HTTP_RAW_POST_DATA'];
-// $res = $db->insert_data($data,'t_test_log');
+$data = array();
+// $data['text_conent'] = $_POST;
+$data['text_conent'] = $GLOBALS['HTTP_RAW_POST_DATA'];
+$res = $db->insert_data($data,'t_test_log');
 
 //回调数据处理，根据回调信息，为success的时候查询订单状态是否为1，为0则进行数据更新
 function xmlToArray($xml){    

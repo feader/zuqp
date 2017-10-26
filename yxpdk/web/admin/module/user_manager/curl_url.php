@@ -13,11 +13,12 @@ $get_value_sql = "select setting_value from t_system_setting where setting_name=
 $get_value = $db->get_one_info($get_value_sql);
 
 $web_server_sql = "select setting_value from t_system_setting where setting_name='web_server'";
-$web_server = $db->get_one_info($get_value_sql);
+$web_server = $db->get_one_info($web_server_sql);
 
 function curl_url($web_server,$part,$data,$port){
 	$uid = $data['uid'];
-	$url = $web_server.':'.$port.'/'.$part."?user_id=$uid";	
+	//$url = $web_server.':'.$port.'/'.$part."?user_id=$uid";	
+	$url = '127.0.0.1:'.$port.'/'.$part."?user_id=$uid";	
 	$ch = curl_init();
 	//设置选项，包括URL
 	curl_setopt($ch, CURLOPT_URL, $url);	
@@ -35,7 +36,7 @@ $username = $_GET['username'];
 
 $part = $_GET['part'];
 
-$sql = "select uid from t_game_user where username='$username'";
+$sql = "select uid from t_game_user where uid='$username'";
 
 $check = $db->get_one_info($sql);
 
@@ -46,7 +47,7 @@ if(!empty($check)){
 	$data['uid'] = $check['uid'];
 
 	$curl_info = curl_url($web_server['setting_value'],$part,$data,$get_value['setting_value']);
-	
+
 	$data['action_time'] = time();
 	
 	$data['handler'] = $admin_user_name;

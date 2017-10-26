@@ -41,6 +41,12 @@ tr.focus {
     <div class='show_br'></div>
     <!-- 总玩牌数：<input type="text" name="total_pay_times" />
     <div class='show_br'></div> -->
+    排序：<select name="sort">
+            <option value="1" <{if $sort==1}>selected<{/if}> >按注册时间反序</option>
+            <option value="2" <{if $sort==2}>selected<{/if}> >按注册时间顺序</option>
+            <option value="3" <{if $sort==3}>selected<{/if}> >房卡余额</option>
+        </select>
+    <div class='show_br'></div>
     注册起始：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateStart" size="12" value="<{$date_time.datestart}>">
     <div class='show_br'></div>
     注册结束：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateEnd" size="12" value="<{$date_time.dateend}>">
@@ -87,7 +93,7 @@ tr.focus {
 
 
 <{foreach from=$pageHTML key=page_name item=page_id}>
-    <a href="?pid=<{$page_id}>&dateStart=<{$date_time.datestart}>&dateEnd=<{$date_time.dateend}>&username=<{$username}>&uid=<{$uid}>"><{$page_name}></a>
+    <a href="?pid=<{$page_id}>&dateStart=<{$date_time.datestart}>&dateEnd=<{$date_time.dateend}>&username=<{$username}>&uid=<{$uid}>&sort=<{$sort}>"><{$page_name}></a>
 <{/foreach}>
 </div>
 <div style="height:150px;"></div>

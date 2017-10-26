@@ -18,6 +18,8 @@ $dateStart = strtotime($date_time['datestart']);
 $dateEnd = strtotime($date_time['dateend']);
 $where = 'where action_time BETWEEN '.$dateStart.' and '.$dateEnd;
 
+$gm_sell_sql = "SELECT seller_uid,sum(dimond_num) as total_diamond FROM `t_sell_log` WHERE seller_uid in('') and action_time between 0 and $dateEnd group by seller_uid";
+
 if($_GET['action'] == 'search' ){
 	$dateStart = strtotime($_GET['dateStart']);
 	$dateEnd = strtotime($_GET['dateEnd']);
@@ -35,14 +37,13 @@ if($_GET['action'] == 'search' ){
 	$input_data = array();
 	$input_data['seller_uid'] = $seller_uid;
 	$input_data['buyer_uid'] = $buyer_uid;
-
+	$gm_sell_sql = "SELECT seller_uid,sum(dimond_num) as total_diamond FROM `t_sell_log` WHERE seller_uid in('') and action_time between $dateStart and $dateEnd group by seller_uid";
 }
 
-
-
+$gm_sell_log = $db->fetchAll($gm_sell_sql);
 
 if($_GET['action'] == 'do_execel'){
-
+	$where = '';
 	$dateStart = strtotime($_GET['dateStart']);
 	$dateEnd = strtotime($_GET['dateEnd']);
 	$where .= 'where action_time BETWEEN '.$dateStart.' and '.$dateEnd;
@@ -128,8 +129,8 @@ $endYesterday = mktime(0,0,0,date('m'),date('d'),date('Y'))-1;
 $yesterday = get_count($beginYesterday,$endYesterday,'yesterday',$db);
 
 //上周代理给玩家售卡数
-$beginLastweek = mktime(0,0,0,date('m'),date('d')-7,date('Y'));
-$endLastweek = mktime(23,59,59,date('m'),date('d')-1,date('Y'))-1;
+$beginLastweek=mktime(0,0,0,date('m'),date('d')-date('w')+1-7,date('Y')); 
+$endLastweek=mktime(23,59,59,date('m'),date('d')-date('w')+7-7,date('Y'));
 $lastweek = get_count($beginLastweek,$endLastweek,'lastweek',$db);
 
 $user_sql = "select * from t_sell_log $where ORDER BY action_time DESC LIMIT $begin, " . 100;
@@ -142,6 +143,9 @@ $pageHTML    = getPages($page, $counts, 100);
 $all_dimond_sql = "SELECT sum(dimond_num) AS all_dimond FROM t_sell_log";
 $all_dimond = $db->get_one_info($all_dimond_sql);
 
+$search_sql = "SELECT sum(dimond_num) AS all_dimond FROM t_sell_log $where";
+$search_dimond = $db->get_one_info($search_sql);
+
 $total_data = array();
 $total_data['today'] = $today;
 $total_data['yesterday'] = $yesterday;
@@ -149,10 +153,12 @@ $total_data['lastweek'] = $lastweek;
 
 $smarty->assign("pageHTML", $pageHTML);
 $smarty->assign("user_list", $user_list);
+$smarty->assign("gm_sell_log", $gm_sell_log);
 $smarty->assign("date_time", $date_time);
 $smarty->assign("input_data", $input_data);
 $smarty->assign("total_data", $total_data);
 $smarty->assign("all_dimond", $all_dimond['all_dimond'] ? $all_dimond['all_dimond'] : 0);
+$smarty->assign("search_dimond", $search_dimond['all_dimond'] ? $search_dimond['all_dimond'] : 0);
 
 
 $smarty->display("module/recharge_manager/sell_to_user_list.html");

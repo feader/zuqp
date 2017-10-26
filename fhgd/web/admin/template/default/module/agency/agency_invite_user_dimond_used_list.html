@@ -45,20 +45,25 @@ tr.focus {
 
 </div>
 <br/>
+
+<div>
+    <p>查询区间总消耗房卡：<{$search.total_diamond}></p>    
+</div>
+
 <table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
     <thead>
     <tr class='table_list_head'>
-        <td>编号</td>
+        <td>序号</td>
         <td>玩家ID</td>
         <td>消耗时间</td>      
-        <td>消耗钻石</td>              
+        <td>消耗房卡</td>              
     </tr>
     </thead>
 
     <tbody>
     <{foreach item=log_list from=$agency_invite_user_cost key=key}>
         <tr class="<{cycle values='trOdd, trEven'}>">
-            <td><{$log_list.id}></td>
+            <td><{$key+1}></td>
             <td><{$log_list.uid}></td>
             <td><{$log_list.use_time|date_format:"%Y/%m/%d %H:%M:%S"}></td>        
             <td><{$log_list.use_dimond}></td>                                    

@@ -75,7 +75,8 @@ if($action =='search_user'){
 function curl_url($web_server,$part,$data,$port){
 	$uid = $data['uid'];
 	$num = $data['add_num'];
-	$url = $web_server.':'.$port.'/'.$part."?user_id=$uid&add_num=$num";
+	//$url = $web_server.':'.$port.'/'.$part."?user_id=$uid&add_num=$num";
+	$url = '127.0.0.1:'.$port.'/'.$part."?user_id=$uid&add_num=$num";
 	$ch = curl_init();
 	//设置选项，包括URL
 	curl_setopt($ch, CURLOPT_URL, $url);	

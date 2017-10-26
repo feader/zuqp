@@ -24,7 +24,7 @@ tr.focus {
     });
 </script>
 
-<title><{$_lang.left.recharge_record}></title>
+<title>出售记录</title>
 </head>
 
 <body>
@@ -37,11 +37,13 @@ tr.focus {
             <td>今天售卡</td>
             <td>昨天售卡</td>
             <td>上周售卡</td>
+            <td>所有售卡</td>
         </tr>
         <tr class="trOdd">
             <td><{$total_data.today}></td>
             <td><{$total_data.yesterday}></td>
             <td><{$total_data.lastweek}></td>
+            <td><{$total_data.all}></td>
         </tr>
     </table>
 </div>
@@ -55,17 +57,19 @@ tr.focus {
     </form>
 </div>
 
+<div>
+    <p>搜索区间总售卡：<{$search.search_total}></p>
+</div>
+
 <table id="tAgency" cellspacing="1" cellpadding="3" border="0" class='table_list' >
     <tr class='table_list_head'>
         <td>会员名称</td>
-        <td>数量</td>
-        <td>金额</td>
+        <td>数量</td>      
         <td>时间</td>
     </tr>
     <{foreach item=log from=$log_list key=key}>
         <tr class="<{cycle values='trOdd, trEven'}>">
             <td><{$log.buyer_name}></td>
-            <td><{$log.dimond_num}></td>
             <td><{$log.dimond_num}></td>
             <td><{$log.action_time|date_format:"%Y/%m/%d %H:%M:%S"}></td>
         </tr>

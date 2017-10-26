@@ -10,12 +10,20 @@ $agency_user_name = $session_data['agency_user_name'];
 
 $action = $_GET['action'];
 
+$result = array();
+
 if($action =='search_agency'){
 	//上级代理给下级代理充值前的检查
 	$username = $db->check_input($_GET['username']);
 
 	if($_GET['username'] == $agency_user_name){
-		die(json_encode(0));
+
+		$result['code'] = 10;
+
+		$result['msg'] = '代理名前后不一致';
+		
+		die(json_encode($result));
+
 	}
 	
 	$sql = "select uid from t_agency where uid = $username";
@@ -27,7 +35,11 @@ if($action =='search_agency'){
 		die(json_encode($user_info));
 	
 	}else{
-		die(json_encode(0));
+		$result['code'] = 11;
+
+		$result['msg'] = '代理不存在';
+		
+		die(json_encode($result));
 	}
 
 }else if($action =='handle'){
@@ -48,11 +60,36 @@ if($action =='search_agency'){
 
 		if($dimond_number<=0){
 			
-			echo json_encode(0);die;
+			$result['code'] = 12;
+
+			$result['msg'] = '房卡数为负数';
+		
+			echo json_encode($result);die;
 		
 		}
 
 		$uid = $user_info['uid'];
+		
+		$charge_acengy = $agency_user_name;
+
+		//卖家代理的数据更新
+		$data1 = array();
+
+		$sql1 = "select uid,recharge_dimond from t_agency where uid = '$charge_acengy'";
+
+		$charge_acengy_info = $db->get_one_info($sql1);
+
+		$data1['recharge_dimond'] = $charge_acengy_info['recharge_dimond'] - $dimond_number;
+
+		if($data1['recharge_dimond']<0){
+			
+			$result['code'] = 13;
+
+			$result['msg'] = '可充值房卡数为负数';
+		
+			echo json_encode($result);die;
+		
+		}
 
 		//出售给推荐代理的返卡
 		if(!empty($user_info['uber_agency'])){
@@ -79,30 +116,13 @@ if($action =='search_agency'){
 			$data4['recharge_dimond'] = $father_acengy_info['recharge_dimond'] + $data3['dimond_back_num'];
 			$res4 = $db->update_data($data4,'t_agency',"uid = '$uber_agency'");	
 		}
-	
-		$charge_acengy = $agency_user_name;
+
+		
 		//买家代理的数据更新
 		$data = array();
 
 		$data['recharge_dimond'] = $user_info['recharge_dimond'] + $dimond_number;
 				
-		$res = $db->update_data($data,'t_agency',"uid = '$uid'");
-		//卖家代理的数据更新
-		$data1 = array();
-
-		$sql1 = "select uid,recharge_dimond from t_agency where uid = '$charge_acengy'";
-
-		$charge_acengy_info = $db->get_one_info($sql1);
-
-		$data1['recharge_dimond'] = $charge_acengy_info['recharge_dimond'] - $dimond_number;
-
-		if($data1['recharge_dimond']<0){
-			
-			echo json_encode(0);die;
-		
-		}
-
-		$res1 = $db->update_data($data1,'t_agency',"uid = '$charge_acengy'");
 		//记录充值记录
 		$data2 = array();
 
@@ -111,18 +131,38 @@ if($action =='search_agency'){
 		$data2['buy_agency_uid'] = $user_info['uid'];
 			
 		$data2['dimond_num'] = $dimond_number;
+		
+		$data2['sell_agency_owned_diamond'] = $charge_acengy_info['recharge_dimond'];
+		
+		$data2['sell_agency_now_diamond'] = $data1['recharge_dimond'];
+		
+		$data2['buy_agency_owned_diamond'] = $user_info['recharge_dimond'];
+		
+		$data2['buy_agency_now_diamond'] = $data['recharge_dimond'];
 
 		$data2['create_time'] = time();
+
+		$res = $db->update_data($data,'t_agency',"uid = '$uid'");
+
+		$res1 = $db->update_data($data1,'t_agency',"uid = '$charge_acengy'");
 
 		$res2 = $db->insert_data($data2,'t_agency_sell_to_agency');
 
 		if($res && $res1 && $res2){
 			
-			echo json_encode(1);die;
+			$result['code'] = 1;
+
+			$result['msg'] = '充值成功';
+		
+			echo json_encode($result);die;
 		
 		}else{
 			
-			echo json_encode(0);die;
+			$result['code'] = 1;
+
+			$result['msg'] = '充值失败';
+
+			echo json_encode($result);die;
 		
 		}
 

@@ -100,6 +100,14 @@ if($_GET['action'] == 'do_execel'){
 $user_sql = "select * from t_user_dimond_log $where ORDER BY use_time DESC LIMIT $begin, " . 100;
 $user_list = $db->fetchAll($user_sql);
 
+if($where!=''){
+
+	$user_coust_sql = "select sum(use_dimond) as search_cost from t_user_dimond_log $where";
+	$user_search_cost = $db->fetchOne($user_coust_sql);
+	$smarty->assign("search_cost", $user_search_cost['search_cost']);
+	
+}
+
 $all_cost_sql    = "select sum(use_dimond) as all_cost from t_user_dimond_log";
 $all_cost = $db->fetchOne($all_cost_sql);
 

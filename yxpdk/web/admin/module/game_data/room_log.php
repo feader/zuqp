@@ -62,6 +62,9 @@ $count_data['yesterday'] = $yesterday['yesterday'];
 
 $room_log_sql = "select * from t_game_room_log $where order by action_time desc limit ".$begin.',20';
 
+$room_log_count_sql = "select count(*) as search_counts from t_game_room_log $where";
+$search_counts = $db->get_one_info($room_log_count_sql);
+
 $room_log = $db->fetchAll($room_log_sql);
 
 $count_sql = 'select count(*) as count from t_game_room_log '.$where;
@@ -71,6 +74,7 @@ $pageHTML    = getPages($page, $counts['count'], 20);
 $smarty->assign("pageHTML", $pageHTML);
 $smarty->assign("room_log", $room_log);
 $smarty->assign("count_data", $count_data);
+$smarty->assign("search_counts", $search_counts['search_counts']);
 $smarty->assign("time_start", $_GET['dateStart']);
 $smarty->assign("time_end", $_GET['dateEnd']);
 $smarty->assign("uid", $_GET['uid']);

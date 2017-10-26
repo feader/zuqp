@@ -14,6 +14,8 @@ $date_time['datestart'] = date('Y-m-d',time()-86400);
 $date_time['dateend'] = date('Y-m-d',time());
 
 $where = 'where 1 ';
+$order = 'order by register_time desc';
+
 if($_GET['action'] == 'search' ){
 	
 	if(!empty($_GET['dateStart']) && !empty($_GET['dateEnd'])){
@@ -31,6 +33,25 @@ if($_GET['action'] == 'search' ){
 	if(!empty($_GET['uid'])){
 		$uid = $_GET['uid'];
 		$where .= " and uid = '$uid'";
+	}
+	if(!empty($_GET['sort'])){
+		$sort = $_GET['sort'];
+		$order = '';
+		switch ($sort) {
+			case '1':
+				$order .= 'order by register_time desc';
+				break;
+			case '2':
+				$order .= 'order by register_time asc';
+				break;	
+			case '3':
+				$order .= 'order by dimond desc';
+				break;		
+			
+			default:
+				$order .= 'order by register_time desc';
+				break;
+		}
 	}
 	// if(!empty($_GET['total_pay_times'])){
 	// 	$total_pay_times = $_GET['total_pay_times'];
@@ -115,11 +136,11 @@ if($_GET['action'] == 'do_execel'){
 	die;
 }
 
-$user_sql = "select * from t_game_user $where ORDER BY register_time DESC LIMIT $begin, " . 100;
+$user_sql = "select * from t_game_user $where $order LIMIT $begin, " . 100;
 
 
 $user_list = $db->fetchAll($user_sql);
-$sqlCount    = "select count(1) as count from t_game_user $where ORDER BY register_time DESC";
+$sqlCount    = "select count(1) as count from t_game_user $where $order";
 $resultCount = $db->fetchOne($sqlCount);
 $counts      = $resultCount['count'];
 $pageHTML    = getPages($page, $counts, 100);
@@ -127,6 +148,7 @@ $pageHTML    = getPages($page, $counts, 100);
 $smarty->assign("pageHTML", $pageHTML);
 $smarty->assign("user_list", $user_list);
 $smarty->assign("date_time", $date_time);
+$smarty->assign("sort", $sort);
 $smarty->assign("username", $_GET['username']);
 $smarty->assign("uid", $_GET['uid']);
 

@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>代理房卡调整</title>
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/jquery.qrcode.min.js"></script>
+</head>
+
+ <body>
+ 
+ <div id="position">当前位置：代理系统 > 代理房卡调整</div>
+	
+    <form action="" method="post">
+		<p>代理房卡调整</p>
+		代理账号: <input type="text" name="auid" value=""> 
+        <br><br>    
+		房卡数: <input type="text" name="diamond" value="">
+        <select name="change_type">
+            <option value="1">增加</option>
+            <option value="2">减少</option>
+        </select> 
+        <br><br>
+        调整备注: <input type="text" name="note" value="">
+        <br><br>
+
+        <input type="hidden" name="action" value='change'/>
+		<input name="submit" value="提交修改"  type="submit">
+		<br><br>
+
+	</form>
+
+
+
+	
+
+	
+
+ </body>
+</html>

@@ -17,17 +17,21 @@ if($_POST['action']=='edit'){
 	
 	$res = $db->update_data($data,'t_system_setting',"id=$id");
 
-	if($res){
-
-		$get_value_sql = "select setting_value from t_system_setting where setting_name='interface_port_num'";
+	$get_value_sql = "select setting_value from t_system_setting where setting_name='interface_port_num'";
 		
-		$get_value = $db->get_one_info($get_value_sql);
+	$get_value = $db->get_one_info($get_value_sql);
 
-		$web_server_sql = "select setting_value from t_system_setting where setting_name='web_server'";
-		
-		$web_server = $db->get_one_info($web_server_sql);
+	$web_server_sql = "select setting_value from t_system_setting where setting_name='web_server'";
+	
+	$web_server = $db->get_one_info($web_server_sql);
 
-		$res1 = curl_url($web_server['setting_value'],'gm/set_billboard_content',$data,$get_value['setting_value']);
+	$res1 = curl_url($web_server['setting_value'],'gm/set_billboard_content',$data,$get_value['setting_value']);
+
+	$res_code = json_decode($res1);
+
+	$code = $res_code->errorcode;
+
+	if($code==0){
 
 		$db->jump('编辑成功！');
 
@@ -45,7 +49,9 @@ $smarty->display("module/game_manager/game_notice.html");
 
 function curl_url($web_server,$part,$data,$port){
 	$content = $data['setting_value'];
-	$url = $web_server.':'.$port.'/'.$part."?content=$content";
+	//$url = $web_server.':'.$port.'/'.$part."?content=$content";
+	$url = '127.0.0.1:'.$port.'/'.$part."?content=$content";
+	// var_dump($url);die;
 	$ch = curl_init();
 	//设置选项，包括URL
 	curl_setopt($ch, CURLOPT_URL, $url);	

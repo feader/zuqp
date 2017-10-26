@@ -5,6 +5,16 @@ $pay_config = array(
 			'dimond_cnt'=>300,
 			'gift_dimond_cnt'=>0,
 		),
+	1 => array(
+			'total_fee'=>1000,
+			'dimond_cnt'=>1200,
+			'gift_dimond_cnt'=>200,
+		),
+	2 => array(
+			'total_fee'=>2000,
+			'dimond_cnt'=>2600,
+			'gift_dimond_cnt'=>600,
+		),
 	// 0 => array(
 	// 		'total_fee'=>400,
 	// 		'dimond_cnt'=>200,

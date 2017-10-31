@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<link rel="stylesheet" href="../../../admin/static/css/base.css" type="text/css">
+<link rel="stylesheet" href="../../../admin/static/css/style.css" type="text/css">
+<script type="text/javascript" src="../../../admin/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../admin/static/js/My97DatePicker/WdatePicker.js"></script>
+<link rel="stylesheet" href="../../../admin/static/css/public.css" type="text/css">
+<script type="text/javascript" src="../../../admin/static/js/public.js"></script>
+<title>俱乐部</title>
+</head>
+
+<body>
+
+<div id="position">当前位置：用户管理 > 俱乐部</div>
+
+<table align="center">
+    <tr>
+        <td>玩家UID：<input type="text" value=''></td>
+        <td><input type="button" class='add_club' value="新增俱乐部" /></td>
+        <td><p class="add_back"></p></td>
+    </tr>
+    <tr>
+        <td>玩家UID：<input type="text" value=''></td>
+        <td>俱乐部ID：<input type="text" name="club_id" value=''></td>
+        <td><input type="button" class='del_club' value="删除俱乐部" /></td>
+        <td><p class="del_back"></p></td>
+    </tr>
+    <tr>
+        <td>玩家UID：<input type="text" value=''></td>
+        <td><input type="button" class='check_club' value="查询俱乐部" /></td>
+        <td><p class="check_back"></p></td>
+    </tr>
+</table>
+
+
+
+<script>
+
+    $('.add_club').click(function() {
+        var uid = $(this).parent().prev().children().val();
+        var part = 'gm/create_club'
+        if(uid==''){
+            alert('非法操作！');
+            return false;
+        }
+        $.ajax({
+            type:'GET',
+            url:'club_manage.php?action=add',
+            data:{uid:uid,part:part},
+            dataType:'json',
+            success:function(res){
+                //console.log(res);
+                
+                $('.add_back').html(res.msg);
+                
+            } 
+        })
+    })
+
+    $('.del_club').click(function() {
+        var uid = $(this).parent().prev().prev().children().val();
+        var club_id = $(this).parent().prev().children().val(); 
+        var part = 'gm/delete_club'
+        if(uid==''||club_id==''){
+            alert('非法操作！');
+            return false;
+        }
+        $.ajax({
+            type:'GET',
+            url:'club_manage.php?action=del',
+            data:{uid:uid,club_id:club_id,part:part},
+            dataType:'json',
+            success:function(res){
+                //console.log(res);
+                
+                $('.del_back').html(res.msg);
+                
+            } 
+        })
+    })
+
+    $('.check_club').click(function() {
+        var uid = $(this).parent().prev().children().val();
+        var part = 'gm/query_club'
+        if(uid==''){
+            alert('非法操作！');
+            return false;
+        }
+        $.ajax({
+            type:'GET',
+            url:'club_manage.php?action=check',
+            data:{uid:uid,part:part},
+            dataType:'json',
+            success:function(res){
+                //console.log(res);
+                
+                $('.check_back').html(res.msg);
+               
+            } 
+        })
+    })
+   
+
+</script>
+
+</body>
+</html>

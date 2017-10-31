@@ -4,7 +4,11 @@ include "../../config/config.php";
 include SYSDIR_ADMIN."/include/global2.php";
 global $smarty,$db;
 
-$secret ="c921727526477ed9db4e06bd583573f6"; // 在产品申请单中填入的通知加密字符
+$get_value_sql = "select setting_value from t_system_setting where setting_name='secret'";
+$get_value = $db->get_one_info($get_value_sql);
+
+//$secret ="c921727526477ed9db4e06bd583573f6"; // 在产品申请单中填入的通知加密字符
+$secret = $get_value['setting_value']; // 在产品申请单中填入的通知加密字符
     
 // 下列各参数都不需要调用 urldecode 进行解码
 $amount = $_GET['amount'];

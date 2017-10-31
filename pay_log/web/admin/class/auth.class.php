@@ -250,7 +250,7 @@ class AuthClass
 			//管理员系统(100~119)
 			'100' => array("man_id" => '100', "desc" => "管理员管理", "url" =>'module/admin/admin_list.php', "man_type"=>'ADMIN_MANAGER'),
 			'101' => array("man_id" => '101', "desc" => "组群管理", "url" =>'module/admin/admin_group_list.php', "man_type"=>'ADMIN_MANAGER'),
-			// '102' => array("man_id" => '102', "desc" => "参数设置", "url" =>'module/admin/set_values.php', "man_type"=>'ADMIN_MANAGER'),
+			'102' => array("man_id" => '102', "desc" => "参数设置", "url" =>'module/admin/set_values.php', "man_type"=>'ADMIN_MANAGER'),
 			// '103' => array("man_id" => '103', "desc" => "线下比赛", "url" =>'module/admin/off_line_play_setting.php', "man_type"=>'ADMIN_MANAGER'),
 						
 		);

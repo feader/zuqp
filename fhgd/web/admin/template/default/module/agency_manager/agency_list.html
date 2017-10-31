@@ -23,7 +23,7 @@ tr.focus {
 </script>
 <link rel="stylesheet" href="../../../admin/static/css/public.css" type="text/css">
 <script type="text/javascript" src="../../../admin/static/js/public.js"></script>
-<title><{$_lang.left.recharge_record}></title>
+<title>代理列表</title>
 </head>
 
 <body>
@@ -35,10 +35,10 @@ tr.focus {
         <div class='show_br'></div>
         上级代理：<input type="text" name="uber_agency" value="<{$input_data.uber_agency}>" />
         <div class='show_br'></div>
-        开始时间：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateStart" size="12" value="<{$date_time.datestart}>">
+        <!-- 开始时间：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateStart" size="12" value="<{$date_time.datestart}>">
         <div class='show_br'></div>
         结束时间：<input type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="dateEnd" size="12" value="<{$date_time.dateend}>">    
-        <div class='show_br'></div>
+        <div class='show_br'></div> -->
         <input type="button" value="查询" id='sub_btn'>
         <input type="hidden" value="" name="action" id='action'/>
     </form>
@@ -51,9 +51,12 @@ tr.focus {
         <td>代理级别</td>
         <td>上级代理</td>
         <td>账号</td>
-        <td>昵称</td>
-        <td>充值钻石</td>
+        <td>昵称</td>        
         <td>充值金额</td>
+        <td>累计充值房卡</td>
+        <td>现有房卡</td>
+        <td>总售卡（玩家）</td>
+        <td>总售卡（代理）</td>
         <td>生成日期</td>
         <td>备注</td>
         <td>操作</td>
@@ -64,10 +67,10 @@ tr.focus {
     <{foreach item=agency from=$agency_list key=key}>
         <tr class="<{cycle values='trOdd, trEven'}>">
             <td>
-            <{if $agency.grade == '1'}> 皇冠
-            <{elseif $agency.grade == '2'}> 钻石
-            <{else $agency.grade == '3'}> 白金
-            <{/if}>
+                <{if $agency.grade == '1'}> 皇冠
+                <{elseif $agency.grade == '2'}> 钻石
+                <{else $agency.grade == '3'}> 白金
+                <{/if}>
             </td>
             <td>
                 <{if $agency.uber_agency != ''}>
@@ -77,16 +80,21 @@ tr.focus {
                 <{/if}>
             </td>
             <td><{$agency.uid}></td>
-            <td><{$agency.nick_name}></td>
-            <td><{$agency.recharge_dimond}></td>
+            <td><{$agency.nick_name}></td>     
             <td><{$agency.recharge_money}></td>
+            <td><{$agency.charge_diamond}></td>
+            <td><{$agency.recharge_dimond}></td>        
+            <td><{$agency.sell_player_diamond}></td>
+            <td><{$agency.sell_agency_diamond}></td>
             <td><{$agency.register_time|date_format:"%Y/%m/%d"}></td>
             <td><{$agency.note}></td>
             <td>
-                 <{if $gid !=3}>
-                <a href="agent_edit.php?id=<{$agency.id}>">编辑</a>|
-               
-                <a href="agent_del.php?id=<{$agency.id}>">删除</a>
+                <{if $gid !=3}>
+                    <a href="agent_view_gamer_cost.php?id=<{$agency.uid}>">推广玩家房卡消耗</a>|
+
+                    <a href="agent_edit.php?id=<{$agency.id}>">编辑</a>|
+                   
+                    <a href="agent_del.php?id=<{$agency.id}>">删除</a>
                 <{/if}>
             </td>    
         </tr>

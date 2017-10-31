@@ -229,6 +229,7 @@ class AuthClass
 			'41' => array("man_id" => '41', "desc" => "用户列表", "url" =>'module/user_manager/user_list_info.php', "man_type"=>'USER_MANAGER'),
 			'42' => array("man_id" => '42', "desc" => "推广用户列表", "url" =>'module/user_manager/agency_wx_user_list.php', "man_type"=>'USER_MANAGER'),
 			'43' => array("man_id" => '43', "desc" => "大师分控制", "url" =>'module/user_manager/master_point_manage.php', "man_type"=>'USER_MANAGER'),
+			'44' => array("man_id" => '44', "desc" => "俱乐部", "url" =>'module/user_manager/club_manage.php', "man_type"=>'USER_MANAGER'),
 
 			//充值系统(60~79)		
 			'60' => array("man_id" => '60', "desc" => "充值管理", "url" =>'module/recharge_manager/recharge_order_list.php', "man_type"=>'RECHARGE_MANAGER'),

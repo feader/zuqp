@@ -34,7 +34,7 @@ function http_curl($url){
   	return $data; // 返回数据  
 }  
 
-$jump_url = "http://houtai.hainanjiuyue.com/houtai/yxpdk/web/admin/module/agency/wxpay/example/jsapi.php?openid=$openid&product_id=$state";
+$jump_url = "http://houtai.hainanjiuyue.com/houtai/fhgd/web/admin/module/agency/wxpay/example/jsapi.php?openid=$openid&product_id=$state";
 
 ?> 
 

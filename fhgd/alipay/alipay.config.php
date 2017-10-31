@@ -9,6 +9,18 @@ $setting = $db->get_one_info($setting_sql);
 
 $web_url = $setting['setting_value'];
 
+$alipay_partner_sql = "select setting_value from t_system_setting where setting_name = 'alipay_partner'";
+
+$alipay_partner_info = $db->get_one_info($alipay_partner_sql);
+
+$alipay_partner = $alipay_partner_info['setting_value'];
+
+$alipay_key_sql = "select setting_value from t_system_setting where setting_name = 'alipay_key'";
+
+$alipay_key_info = $db->get_one_info($alipay_key_sql);
+
+$alipay_key = $alipay_key_info['setting_value'];
+
 /* *
  * 配置文件
  * 版本：3.4
@@ -25,13 +37,13 @@ $web_url = $setting['setting_value'];
  
 //↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 //合作身份者ID，签约账号，以2088开头由16位纯数字组成的字符串，查看地址：https://b.alipay.com/order/pidAndKey.htm
-$alipay_config['partner']		= '2088421286015904';
+$alipay_config['partner']		= $alipay_partner;
 
 //收款支付宝账号，以2088开头由16位纯数字组成的字符串，一般情况下收款账号就是签约账号
 $alipay_config['seller_id']	= $alipay_config['partner'];
 
 // MD5密钥，安全检验码，由数字和字母组成的32位字符串，查看地址：https://b.alipay.com/order/pidAndKey.htm
-$alipay_config['key']			= '28uzd48505bsa62ykd8hlxf3tm2bahz0';
+$alipay_config['key']			= $alipay_key;
 // 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
 $alipay_config['notify_url'] = $web_url."alipay/notify_url.php";
 

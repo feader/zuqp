@@ -3,6 +3,37 @@
 * 	配置账号信息
 */
 
+global $db;
+
+$wx_appid_sql = "select setting_value from t_system_setting where setting_name = 'wx_appid'";
+
+$wx_appid_info = $db->get_one_info($wx_appid_sql);
+
+$wx_appid = $wx_appid_info['setting_value'];
+
+$wx_mchid_sql = "select setting_value from t_system_setting where setting_name = 'wx_mchid'";
+
+$wx_mchid_info = $db->get_one_info($wx_mchid_sql);
+
+$wx_mchid = $wx_mchid_info['setting_value'];
+
+$wx_key_sql = "select setting_value from t_system_setting where setting_name = 'wx_key'";
+
+$wx_key_info = $db->get_one_info($wx_key_sql);
+
+$wx_key = $wx_key_info['setting_value'];
+
+$wx_appsecret_sql = "select setting_value from t_system_setting where setting_name = 'wx_appsecret'";
+
+$wx_appsecret_info = $db->get_one_info($wx_appsecret_sql);
+
+$wx_appsecret = $wx_appsecret_info['setting_value'];
+
+define('WX_APPID', $wx_appid);
+define('WX_MCHID', $wx_mchid);
+define('WX_KEY', $wx_key);
+define('WX_APPSECRET', $wx_appsecret);
+
 class WxPayConfig
 {
 	//=======【基本信息设置】=====================================
@@ -22,10 +53,15 @@ class WxPayConfig
 	 * 获取地址：https://mp.weixin.qq.com/advanced/advanced?action=dev&t=advanced/dev&token=2005451881&lang=zh_CN
 	 * @var string
 	 */
-	const APPID = 'wxf09b5c7c01706dde';
-	const MCHID = '1456967502';
-	const KEY = 'Baimiyuleguangzhoutianqi20170504';
-	const APPSECRET = '00da60a644e5a391714388555b19c557';
+
+	const APPID = WX_APPID;
+	const MCHID = WX_MCHID;
+	const KEY = WX_KEY;
+	const APPSECRET = WX_APPSECRET;
+	// const APPID = 'wxf09b5c7c01706dde';
+	// const MCHID = '1456967502';
+	// const KEY = 'Baimiyuleguangzhoutianqi20170504';
+	// const APPSECRET = '00da60a644e5a391714388555b19c557';
 	// const APPID = 'wx216835025f67347a';
 	// const MCHID = '1462189002';
 	// const KEY = '01fdA5654dQqVF90LjK84Yd32Eg36aeM';

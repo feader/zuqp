@@ -9,7 +9,7 @@ $dbname = $dbConfig['dbname'];
 $session_data = get_session($dbname);
 $gid = $session_data['gid'];
 
-$sql = "select * from t_system_setting where id not in(1,10)";
+$sql = "select * from t_system_setting";
 $setting_info = $db->fetchAll($sql);
 
 $smarty->assign("setting_info", $setting_info);

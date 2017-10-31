@@ -11,8 +11,12 @@ $input_data = array();
 
 if(!empty($_POST)){
 
+	$get_value_sql = "select setting_value from t_system_setting where setting_name='appid'";
+	$get_value = $db->get_one_info($get_value_sql);
+
 	$data['ids'] = $_POST['id'];
-	$data['appid'] = 'e60342626030dc3682835e7d6bc69f72';
+	//$data['appid'] = 'e60342626030dc3682835e7d6bc69f72';
+	$data['appid'] = $get_value['setting_value'];
 	$data['type'] = $_POST['type'];
 	$res = curl_post($post_url,$data);
 
